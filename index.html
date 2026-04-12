@@ -1,0 +1,1037 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <title>Fencibles U10 Red · 2026 Season Plan</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --navy:   #f4f6f9;
+      --navy2:  #ffffff;
+      --navy3:  #e4e8ef;
+      --club-navy: #1a2e52;
+      --club-red:  #c8102e;
+      --club-gold: #c9993a;
+      --teal:   #1a2e52;   /* reuse navy as primary */
+      --green:  #1a6e3c;
+      --amber:  #c9993a;   /* gold */
+      --red:    #c8102e;
+      --purple: #5c3d8f;
+      --text:   #1a2e52;
+      --muted:  #5a6a82;
+      --border: #cdd5e0;
+    }
+    body { background: var(--navy); color: var(--text); font-family: system-ui, -apple-system, sans-serif; font-size: 15px; line-height: 1.5; }
+
+    .hero { background: linear-gradient(135deg, #1a2e52 0%, #0f1e38 100%); padding: 24px 16px; text-align: center; border-bottom: 3px solid #c9993a; }
+    .hero h1 { font-size: 22px; font-weight: 800; color: #c9993a; letter-spacing: -0.5px; }
+    .hero p { color: rgba(255,255,255,0.75); font-size: 13px; margin-top: 4px; }
+    .stats-row { display: flex; justify-content: center; gap: 10px; margin-top: 16px; flex-wrap: wrap; }
+    .stat { background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.3); border-radius: 8px; padding: 8px 14px; text-align: center; min-width: 64px; }
+    .stat-num { font-size: 20px; font-weight: 800; color: #ffffff; }
+    .stat-label { font-size: 10px; color: rgba(255,255,255,0.75); text-transform: uppercase; letter-spacing: 0.5px; }
+
+    .nav { background: #1a2e52; border-bottom: 2px solid #c9993a; padding: 8px 12px; overflow-x: auto; white-space: nowrap; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 6px rgba(26,46,82,0.2); }
+    .nav-scroll { display: flex; gap: 8px; }
+    .nav a { color: rgba(255,255,255,0.7); text-decoration: none; font-size: 12px; background: rgba(255,255,255,0.1); padding: 4px 10px; border-radius: 12px; }
+    .nav a:active, .nav a.active { color: #c9993a; background: rgba(201,153,58,0.2); border: 1px solid rgba(201,153,58,0.4); }
+    .block, .section { scroll-margin-top: 48px; }
+
+    .phases { padding: 16px; display: flex; flex-direction: column; gap: 8px; }
+    .phase-card { border-radius: 10px; padding: 12px 14px; border-left: 4px solid; }
+    .phase-1 { background: #eef1f7; border-color: #1a2e52; }
+    .phase-2 { background: #fdf5e8; border-color: #c9993a; }
+    .phase-3 { background: #fef0f2; border-color: #c8102e; }
+    .phase-4 { background: #eef1f7; border-color: #1a2e52; }
+    .phase-5 { background: #fdf5e8; border-color: #c9993a; }
+    .phase-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.8px; font-weight: 700; margin-bottom: 2px; }
+    .phase-title { font-size: 15px; font-weight: 700; }
+
+    .section { padding: 0 16px 16px; }
+    .section-title { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); margin-bottom: 10px; padding-top: 16px; }
+    .match-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+    .match-pill { background: var(--navy2); border: 1px solid var(--border); border-radius: 8px; padding: 8px; text-align: center; }
+    .match-pill.holiday { background: rgba(148,163,184,0.08); border-color: var(--navy3); }
+    .match-pill.holiday .round { color: var(--navy3); }
+    .match-pill.holiday .date { color: var(--muted); }
+    .match-pill.holiday .note { color: var(--muted); font-style: italic; }
+    .match-pill.warn { border-color: var(--amber); background: rgba(245,158,11,0.08); }
+    .match-pill.warn .note { color: var(--amber); }
+    .match-pill .round { font-size: 11px; color: var(--muted); }
+    .match-pill .date { font-size: 12px; font-weight: 700; }
+    .match-pill .note { font-size: 10px; color: var(--amber); }
+
+    .block { margin: 0 12px 12px; border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+    .block-phase-1 { border-top: 3px solid #1a2e52; }
+    .block-phase-2 { border-top: 3px solid #c9993a; }
+    .block-phase-3 { border-top: 3px solid #c8102e; }
+    .block-phase-4 { border-top: 3px solid #1a2e52; }
+    .block-phase-5 { border-top: 3px solid #c9993a; }
+    .block-header { padding: 14px 16px; cursor: pointer; display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; user-select: none; -webkit-tap-highlight-color: transparent; }
+    .block-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 2px; }
+    .block-num { font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 10px; text-transform: uppercase; }
+    .phase-badge { font-size: 10px; padding: 2px 7px; border-radius: 10px; }
+    .block-title { font-size: 15px; font-weight: 700; }
+    .block-dates { font-size: 11px; color: var(--muted); margin-top: 2px; }
+    .chevron { color: var(--muted); font-size: 14px; transition: transform 0.2s; flex-shrink: 0; margin-top: 2px; }
+    .block.open .chevron { transform: rotate(180deg); }
+    .block-body { display: none; padding: 0 12px 12px; }
+    .block.open .block-body { display: block; }
+
+    .holiday-banner { background: rgba(201,153,58,0.12); border: 1px solid #c9993a; border-radius: 8px; padding: 10px 12px; margin-bottom: 10px; font-size: 13px; color: #7a5c1a; }
+
+    .week-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: var(--muted); margin: 12px 0 6px; }
+    .session-card { border-radius: 10px; margin-bottom: 8px; overflow: hidden; }
+    .session-header { padding: 12px 14px; cursor: pointer; display: flex; align-items: flex-start; justify-content: space-between; -webkit-tap-highlight-color: transparent; gap: 8px; }
+    .session-tag { font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 8px; text-transform: uppercase; display: inline-block; margin-bottom: 3px; }
+    .thu-tag { background: rgba(26,46,82,0.1); color: #1a2e52; }
+    .session-title { font-size: 14px; font-weight: 600; }
+    .session-sub { font-size: 11px; color: var(--muted); margin-top: 1px; }
+    .session-body { padding: 0 14px 14px; display: none; }
+    .session-card.open .session-body { display: block; }
+    .session-chevron { color: var(--muted); transition: transform 0.2s; flex-shrink: 0; margin-top: 3px; font-size: 14px; }
+    .session-card.open .session-chevron { transform: rotate(180deg); }
+
+    .thu-card { background: #f0f3f9; border: 1px solid rgba(26,46,82,0.2); }
+
+    .thu-theme { font-size: 13px; font-weight: 700; color: #1a2e52; margin-bottom: 10px; padding: 8px 10px; background: rgba(26,46,82,0.08); border-left: 3px solid #c9993a; border-radius: 0 6px 6px 0; }
+
+    .comp-block { background: rgba(200,16,46,0.05); border: 1px solid rgba(200,16,46,0.25); border-radius: 8px; padding: 10px 12px; margin-bottom: 10px; }
+    .comp-title { font-size: 12px; font-weight: 700; color: #c8102e; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
+    .comp-detail { font-size: 12px; color: var(--text); }
+    .comp-challenge { font-size: 12px; color: #c8102e; margin-top: 4px; font-weight: 600; }
+
+    .ssg-block { background: #f8fafc; border: 1px solid var(--border); border-radius: 8px; margin-bottom: 8px; overflow: hidden; }
+    .ssg-header { padding: 10px 12px; display: flex; align-items: flex-start; gap: 10px; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+    .ssg-num { background: #1a2e52; color: #ffffff; font-size: 10px; font-weight: 800; width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
+    .ssg-num.ssg2 { background: #c8102e; color: white; }
+    .ssg-info { flex: 1; }
+    .ssg-name { font-size: 13px; font-weight: 700; }
+    .ssg-format { font-size: 11px; color: var(--muted); }
+    .ssg-body { padding: 0 12px 12px; display: none; }
+    .ssg-block.open .ssg-body { display: block; }
+    .ssg-chevron { color: var(--muted); font-size: 13px; transition: transform 0.2s; flex-shrink: 0; margin-top: 3px; }
+    .ssg-block.open .ssg-chevron { transform: rotate(180deg); }
+
+    .progression { background: rgba(201,153,58,0.08); border: 1px solid rgba(201,153,58,0.35); border-radius: 8px; padding: 8px 12px; margin-bottom: 10px; display: flex; align-items: flex-start; gap: 8px; }
+    .prog-arrow { color: #c9993a; font-size: 16px; flex-shrink: 0; }
+    .prog-text { font-size: 12px; color: #7a5c1a; }
+    .prog-text strong { color: #1a2e52; }
+
+    .detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 10px; }
+    .detail-item { background: var(--navy3); border-radius: 6px; padding: 6px 8px; }
+    .detail-key { font-size: 10px; color: var(--muted); text-transform: uppercase; }
+    .detail-val { font-size: 12px; font-weight: 600; }
+
+    .pitch-wrap { background: #e8f5e9; border-radius: 8px; padding: 8px; margin-bottom: 10px; border: 1px solid #c8e6c9; }
+    .pitch-wrap svg { width: 100%; height: auto; display: block; }
+
+    .setup-text { font-size: 12px; line-height: 1.6; background: var(--navy3); border-radius: 6px; padding: 8px; margin-bottom: 10px; color: var(--text); }
+    .rules-title { font-size: 11px; font-weight: 700; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; letter-spacing: 0.5px; }
+    .rule-item { display: flex; gap: 8px; padding: 5px 0; border-bottom: 1px solid var(--border); font-size: 12px; }
+    .rule-item:last-child { border-bottom: none; }
+    .rule-item.dual { border-left: 3px solid #c9993a; padding-left: 8px; margin-left: -1px; }
+    .rule-dot { color: #1a2e52; flex-shrink: 0; }
+
+    .scoring { background: rgba(26,46,82,0.06); border-radius: 6px; padding: 8px 10px; margin-top: 8px; font-size: 12px; border-left: 3px solid #1a2e52; }
+    .scoring strong { color: #1a2e52; display: block; font-size: 11px; text-transform: uppercase; margin-bottom: 2px; }
+
+    .cues-block { background: rgba(201,153,58,0.07); border-radius: 6px; padding: 10px; margin-top: 8px; border-left: 3px solid #c9993a; }
+    .cues-title { font-size: 11px; font-weight: 700; color: #8a6820; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+    .cue-item { font-size: 12px; padding: 2px 0; }
+    .cue-item::before { content: '→ '; color: #c9993a; }
+
+    .lookfor { background: rgba(200,16,46,0.05); border: 1px solid rgba(200,16,46,0.2); border-radius: 6px; padding: 8px 10px; margin-top: 8px; font-size: 12px; }
+    .lookfor strong { color: #c8102e; display: block; font-size: 11px; text-transform: uppercase; margin-bottom: 2px; }
+
+    .debrief { margin-top: 10px; padding: 10px; background: rgba(26,46,82,0.05); border-radius: 6px; border-left: 3px solid #1a2e52; font-size: 12px; font-style: italic; }
+    .debrief strong { color: #1a2e52; font-style: normal; display: block; font-size: 11px; text-transform: uppercase; margin-bottom: 2px; }
+
+    .footer { text-align: center; padding: 24px 16px; color: var(--muted); font-size: 12px; border-top: 1px solid var(--border); margin-top: 16px; background: #ffffff; }
+    .current-badge { font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 10px; background: #c8102e; color: #fff; text-transform: uppercase; letter-spacing: 0.5px; }
+    .upcoming-badge { font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 10px; background: rgba(201,153,58,0.2); color: #8a6820; border: 1px solid #c9993a; text-transform: uppercase; letter-spacing: 0.5px; }
+
+    hr { border: none; border-top: 1px solid var(--border); margin: 12px 0; }
+
+    .p1 { background: rgba(26,46,82,0.12); color: #1a2e52; }
+    .p2 { background: rgba(201,153,58,0.15); color: #8a6820; }
+    .p3 { background: rgba(200,16,46,0.12); color: #c8102e; }
+    .p4 { background: rgba(26,46,82,0.12); color: #1a2e52; }
+    .p5 { background: rgba(201,153,58,0.15); color: #8a6820; }
+  </style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>⚽ Fencibles U10 Red</h1>
+  <p>2026 Advanced Season Plan</p>
+  <div class="stats-row">
+    <div class="stat"><div class="stat-num">10</div><div class="stat-label">Blocks</div></div>
+    <div class="stat"><div class="stat-num">20</div><div class="stat-label">Thu SSGs</div></div>
+    <div class="stat"><div class="stat-num">17</div><div class="stat-label">Rounds</div></div>
+    <div class="stat"><div class="stat-num">5</div><div class="stat-label">Phases</div></div>
+    <div class="stat"><div class="stat-num">40'</div><div class="stat-label">Thu/Session</div></div>
+  </div>
+</div>
+
+<nav class="nav">
+  <div class="nav-scroll" id="navLinks">
+    <a href="#" data-target="matches">Matches</a>
+  </div>
+</nav>
+
+<div id="app"></div>
+
+<footer class="footer">
+  <p>Fencibles U10 Red · 2026 · Thu format: 8' 1v1 + 16' SSG1 + 16' SSG2</p>
+  <p style="margin-top:4px">Amber-bordered rules = dual constraint (advanced demand)</p>
+</footer>
+
+<script>
+const PHASES = [
+  { num:1, label:"Phase 1", title:"Individual Mastery & 1v1", blocks:"1–2", color:"green" },
+  { num:2, label:"Phase 2", title:"Combination Play", blocks:"3–4", color:"teal" },
+  { num:3, label:"Phase 3", title:"Team Shape", blocks:"5–6", color:"purple" },
+  { num:4, label:"Phase 4", title:"Transition", blocks:"7–8", color:"amber" },
+  { num:5, label:"Phase 5", title:"Multi-Concept & Autonomy", blocks:"9–10", color:"red" },
+];
+
+const MATCHES = [
+  { r:"–",  date:"Sat 25 Apr", note:"ANZAC Wknd",       holiday:true },
+  { r:1,    date:"Sat 2 May",  note:"" },
+  { r:2,    date:"Sat 9 May",  note:"" },
+  { r:3,    date:"Sat 16 May", note:"" },
+  { r:4,    date:"Sat 23 May", note:"" },
+  { r:"–",  date:"Sat 30 May", note:"King's Birthday",   holiday:true },
+  { r:5,    date:"Sat 6 Jun",  note:"" },
+  { r:6,    date:"Sat 13 Jun", note:"" },
+  { r:7,    date:"Sat 20 Jun", note:"" },
+  { r:8,    date:"Sat 27 Jun", note:"" },
+  { r:9,    date:"Sat 4 Jul",  note:"" },
+  { r:"–",  date:"Sat 11 Jul", note:"Matariki / Hols",   holiday:true },
+  { r:10,   date:"Sat 18 Jul", note:"⚠ No training wk" },
+  { r:11,   date:"Sat 25 Jul", note:"" },
+  { r:12,   date:"Sat 1 Aug",  note:"" },
+  { r:13,   date:"Sat 8 Aug",  note:"" },
+  { r:14,   date:"Sat 15 Aug", note:"" },
+  { r:15,   date:"Sat 22 Aug", note:"" },
+  { r:16,   date:"Sat 29 Aug", note:"" },
+  { r:17,   date:"Sat 5 Sep",  note:"Final Round" },
+];
+
+const BLOCKS = [
+  {
+    num:1, phase:1,
+    theme:"Ball Mastery + 1v1 Attacking",
+    dates:"14 Apr – 25 Apr", start:"2026-04-14", end:"2026-04-25",
+    rounds:[],
+    holiday:null,
+    weeks:[
+      {
+        wk:1,
+        tue:{ date:"Tue 14 Apr", next:null,
+          theme:"Ball mastery — close control & change of direction",
+          focuses:["Dribbling at speed — inside/outside of foot","Close control in tight spaces","Body feints and shielding","Change of direction at pace"],
+          align:"Academy builds technical base; reinforce 'touch before move' habit" },
+        thu:{ date:"Thu 16 Apr",
+          theme:"First touch – receive and control",
+          comp:{ focus:"Beat the defender from the dribble", detail:"3 channels (10×8m), 4 rounds × 90 sec. Team A vs Team B.", challenge:"Challenge: touch inside then burst past — no rushing the touch" },
+          ssg1:{ name:"3v3 Tight Possession", fmt:"3v3", pitch:"20×15m", dur:"16 min", equip:"Bibs, cones, 1 ball",
+            setup:"Small square. Keep possession. 5 consecutive passes = 1 point. 2-touch limit enforced.",
+            rules:[{t:"2-touch maximum",d:false},{t:"5 consecutive passes = 1 point",d:false},{t:"Turnover resets the count",d:false},{t:"Extra touch allowed if under immediate pressure (once per spell)",d:false}],
+            scoring:"Possession team: 1 pt per 5-pass sequence. Defending team: 1 pt per turnover.",
+            cues:["'Show me the touch first'","'Feet ready before the ball arrives'","'Use your body to protect'"],
+            look:"Which players settle before looking up vs. rushing the touch?",
+            type:"possession" },
+          ssg2:{ name:"3v3 Turn-and-Possess", fmt:"3v3", pitch:"22×15m", dur:"16 min", equip:"Bibs, cones, 2 mini goals",
+            prog:"SSG 1 builds first touch quality → SSG 2 adds directional intent: same touch, but it must now create turn space to go forward.",
+            setup:"Same grid with two mini goals. Receive + must turn with ball before passing forward. Score by dribbling through a mini goal.",
+            rules:[{t:"Must control AND turn before passing toward goal",d:true},{t:"2-touch rule removed — focus on movement quality",d:false},{t:"Mini goal score = 1 pt (dribble through)",d:false},{t:"Immediate press allowed on receipt",d:false}],
+            scoring:"Goal through mini goal = 1 pt. Goal from a clean turn inside zone = 2 pts.",
+            cues:["'Half-turn body to see both sides'","'Take touch away from pressure'","'Turn low, drive forward'"],
+            look:"Do players turn naturally or stall under pressure?",
+            type:"mini_goal" },
+          debrief:"What did your first touch give you — time or problems? When is a turn better than a pass back?" }
+      },
+      {
+        wk:2,
+        tue:{ date:"Tue 21 Apr", next:null,
+          theme:"1v1 attacking — create space to shoot",
+          focuses:["Running with the ball at defenders","Disguise and deception — drop shoulder","Finishing angles from 1v1","Composure in front of goal"],
+          align:"Academy focus shifts to 1v1 finishing; link individual confidence to dribble decisions" },
+        thu:{ date:"Thu 23 Apr",
+          theme:"1v1 attacking – create and finish",
+          comp:{ focus:"Beat the defender and finish", detail:"3 channels, 4 rounds × 90 sec. Attacker starts with ball, must beat defender to score.", challenge:"Challenge: feint before the move — earn +1 bonus for a clean skill" },
+          ssg1:{ name:"4v4 Finishing Zone", fmt:"4v4", pitch:"28×20m", dur:"16 min", equip:"Bibs, cones, 2 goals",
+            setup:"Scoring zone 3m from goal. Attacker must receive in zone and beat last defender 1v1 to score. No shooting outside zone.",
+            rules:[{t:"Must receive in scoring zone to shoot",d:false},{t:"Last defender 1v1 — no teammate enters zone",d:true},{t:"GK distributes to restart",d:false},{t:"Goal only counts if defender beaten with skill",d:false}],
+            scoring:"Standard goal = 1 pt. Goal from nutmeg or clean skill = 2 pts.",
+            cues:["'Take defender one way, go the other'","'Open body on receipt'","'Decision before the ball arrives'"],
+            look:"Do attackers commit the defender or shoot early?",
+            type:"full_goal" },
+          ssg2:{ name:"4v4 Open — 1v1 to Score", fmt:"4v4", pitch:"30×22m", dur:"16 min", equip:"Bibs, cones, 2 goals",
+            prog:"SSG 1 forces 1v1 via zone constraint → SSG 2 opens the game: players must now read when they're in a natural 1v1 and choose to go.",
+            setup:"Open match. Coach can call 'HOLD' to freeze all players except one attacker vs one defender — must go alone.",
+            rules:[{t:"Standard open match otherwise",d:false},{t:"Coach 'HOLD' call: only 1v1 player may move",d:true},{t:"Normal goal = 1 pt; held 1v1 goal = 2 pts",d:false},{t:"GK distributes to restart",d:false}],
+            scoring:"Normal goal = 1 pt. Goal from 1v1 commit (held or natural) = 2 pts.",
+            cues:["'Recognise your 1v1 moment'","'Go when defender is flat-footed'","'Back post check after drive'"],
+            look:"Players who turn away from 1v1 — invite them to take the risk.",
+            type:"full_goal" },
+          debrief:"Name one moment you created space. What did the defender do that told you to go?" }
+      }
+    ]
+  },
+  {
+    num:2, phase:1,
+    theme:"1v1 Defending & Pressing",
+    dates:"28 Apr – 9 May", start:"2026-04-28", end:"2026-05-09",
+    rounds:[1,2],
+    holiday:null,
+    weeks:[
+      {
+        wk:1,
+        tue:{ date:"Tue 28 Apr", next:"R1 Sat 2 May",
+          theme:"Defending fundamentals — delay and position",
+          focuses:["Correct jockey stance and approach angle","Forcing attacker to weak foot","When to tackle vs. delay","Recovery runs after being beaten"],
+          align:"Academy covers defensive body position; reinforce patience — no lunging" },
+        thu:{ date:"Thu 30 Apr",
+          theme:"1v1 defending – delay and win",
+          comp:{ focus:"Defend + counter — jockey 2 seconds before tackling", detail:"3 channels, 4 rounds × 90 sec. Defender must jockey (no tackle) for 2 full seconds first.", challenge:"Challenge: win ball AND recover to score = double team points" },
+          ssg1:{ name:"4v4 Defensive Duel", fmt:"4v4", pitch:"28×20m", dur:"16 min", equip:"Bibs, cones, 2 mini goals",
+            setup:"Standard 4v4. Defending rule: must jockey side-on for 3 seconds before committing to a tackle on the ball carrier.",
+            rules:[{t:"3-second jockey rule before tackling (coach counts)",d:true},{t:"Goal counts double if won via jockey, not lunge",d:false},{t:"Counter first pass must be forward",d:false},{t:"Free kick if tackle made before 3 seconds",d:false}],
+            scoring:"Goal = 1 pt. Goal after correct jockey win = 2 pts.",
+            cues:["'Side-on, weight balanced'","'Force them to the line'","'Wait for the heavy touch'"],
+            look:"Who shows patience? Who lunges first?",
+            type:"mini_goal" },
+          ssg2:{ name:"4v4 Win + Counter", fmt:"4v4", pitch:"30×22m", dur:"16 min", equip:"Bibs, cones, 2 goals",
+            prog:"SSG 1 builds the jockey discipline → SSG 2 adds the reward: turn a defensive win into a counter within 5 seconds.",
+            setup:"Jockey rule removed. Counter-attack goal within 5 seconds of winning possession = double. Forces immediate forward thinking after winning ball.",
+            rules:[{t:"Jockey rule lifted — free defending",d:false},{t:"Counter goal within 5 sec of winning = 2 pts",d:true},{t:"Counter must involve at least 2 players",d:false},{t:"No reset — restart from GK immediately",d:false}],
+            scoring:"Normal goal = 1 pt. Goal within 5 sec counter = 2 pts.",
+            cues:["'Win it, head up FAST'","'Two of you go'","'Carry your momentum'"],
+            look:"Speed of transition: how quickly does defence become attack?",
+            type:"full_goal" },
+          debrief:"How long did you actually jockey for? What made you decide to tackle — patience or panic?" }
+      },
+      {
+        wk:2,
+        tue:{ date:"Tue 5 May", next:"R2 Sat 9 May",
+          theme:"Pressing — when and how to press",
+          focuses:["Pressing trigger identification","Body shape to force direction","Team press timing — cue off each other","Cover shadow positioning"],
+          align:"Academy introduces press concept; reinforce trigger moments, not constant chasing" },
+        thu:{ date:"Thu 7 May",
+          theme:"Pressing – win it high with a trigger",
+          comp:{ focus:"Press and win — both sprint to loose ball", detail:"3 channels, 4 rounds × 90 sec. Loose ball placed in middle — first to win earns team point.", challenge:"Challenge: must stop within 1 metre of ball on first touch — no sliding past" },
+          ssg1:{ name:"4v4 Press Trigger", fmt:"4v4", pitch:"25×18m", dur:"16 min", equip:"Bibs, cones, 2 mini goals",
+            setup:"Coach calls 'PRESS' on a back pass. Nearest defender closes within 3 seconds; second provides cover. No call = normal play.",
+            rules:[{t:"Press only on coach 'PRESS' call (triggered by back pass)",d:false},{t:"Pressing player within arm's reach in 3 seconds",d:true},{t:"Second defender must cover — no ball-watching",d:false},{t:"Press turnover = free counter forward",d:false}],
+            scoring:"Normal goal = 1 pt. Goal from press turnover = 2 pts.",
+            cues:["'Press together — one goes, one covers'","'Cut the pass lane first'","'If they play out, release'"],
+            look:"Does the second player press with the first or stand and watch?",
+            type:"mini_goal" },
+          ssg2:{ name:"4v4 Self-Press", fmt:"4v4", pitch:"25×18m", dur:"16 min", equip:"Bibs, cones, 2 mini goals",
+            prog:"SSG 1 teaches press action via coach signal → SSG 2 removes the signal: players must read and trigger the press themselves.",
+            setup:"No coach call. Players must identify the back-pass trigger and call it verbally. First player to call 'PRESS' leads — team follows.",
+            rules:[{t:"No coach call — players self-identify the trigger",d:true},{t:"First player to call 'PRESS' leads — team follows",d:false},{t:"Same turnover bonus applies",d:false},{t:"If no one calls, press cannot happen (rewards communication)",d:false}],
+            scoring:"Normal goal = 1 pt. Self-initiated press turnover goal = 2 pts.",
+            cues:["'Who saw it? Say it!'","'Don't wait — call early'","'If you call it, they follow'"],
+            look:"Which players take responsibility for calling? Any no-calls?",
+            type:"mini_goal" },
+          debrief:"What was the trigger? Did you all go together or alone? What should we do if the press fails?" }
+      }
+    ]
+  },
+  {
+    num:3, phase:2,
+    theme:"Combination Play — Wall Pass & Overlap",
+    dates:"12 May – 23 May", start:"2026-05-12", end:"2026-05-23",
+    rounds:[3,4],
+    holiday:null,
+    weeks:[
+      {
+        wk:1,
+        tue:{ date:"Tue 12 May", next:"R3 Sat 16 May",
+          theme:"Wall pass — pass and move into space",
+          focuses:["Pass and accelerate — timing of the run","One-touch return pass technique","Creating space before the combination","Third man run options"],
+          align:"Academy drills wall pass mechanics; Thursday games the same idea under real pressure" },
+        thu:{ date:"Thu 14 May",
+          theme:"Wall pass – pass and move",
+          comp:{ focus:"Wall pass setup → 1v1 finish", detail:"3 channels. Player A passes to side player, runs past defender, receives return, scores.", challenge:"Challenge: must complete the wall pass to earn point — solo dribble doesn't count" },
+          ssg1:{ name:"4v4 Pass-and-Move", fmt:"4v4", pitch:"25×20m", dur:"16 min", equip:"Bibs, cones, 4 corner mini goals",
+            setup:"Corner mini goals at all four corners. Can only score after a combination (pass within 5m followed by movement). Lone dribble goals do not count.",
+            rules:[{t:"Goal only scores after a combination (pass within 5m)",d:true},{t:"Player who passes must continue running",d:false},{t:"Defenders track movement, not just ball",d:false},{t:"No touch limit — focus on movement",d:false}],
+            scoring:"Combination goal = 1 pt. Wall pass completed + goal = 2 pts.",
+            cues:["'Pass, then go — immediately'","'Move to create the return'","'Look for the wall before you receive'"],
+            look:"Do players stop after passing or continue moving?",
+            type:"corner_goals" },
+          ssg2:{ name:"4v4 One-Touch Wall", fmt:"4v4", pitch:"25×20m", dur:"16 min", equip:"Bibs, cones, 4 corner mini goals",
+            prog:"SSG 1 builds pass-and-move habit → SSG 2 rewards the advanced skill: one-touch wall pass return is worth double.",
+            setup:"Same game. One-touch wall pass return = 2 pts. Encourages disguise and instant return.",
+            rules:[{t:"Combination goal still required (1 pt minimum)",d:false},{t:"One-touch wall pass return = 2 pts",d:true},{t:"Normal combination goal = 1 pt",d:false},{t:"'Wall' player cannot hold ball — must return quickly",d:false}],
+            scoring:"Normal combo goal = 1 pt. One-touch wall goal = 2 pts.",
+            cues:["'Set your feet as ball travels'","'Quick return — give before they close'","'Trust the runner's run'"],
+            look:"Quality of the return pass — forced or natural?",
+            type:"corner_goals" },
+          debrief:"Did your teammate move after passing? What did that movement give you as the receiver?" }
+      },
+      {
+        wk:2,
+        tue:{ date:"Tue 19 May", next:"R4 Sat 23 May",
+          theme:"Overlap — third man and width runs",
+          focuses:["Timing the overlap run behind the defender","Decision: overlap or underlap?","Wide play — stretch the defence","Cut-back and pull-back finishing"],
+          align:"Academy works width and runs from deep; reinforce timing over speed of run" },
+        thu:{ date:"Thu 21 May",
+          theme:"Overlap – width and third-man runs",
+          comp:{ focus:"Wide entry → cut inside → beat defender", detail:"3 channels. Attacker starts wide, cuts inside, beats defender 1v1 on mini goal.", challenge:"Challenge: must use one step-over before cutting inside" },
+          ssg1:{ name:"4v4 Overlap Game", fmt:"4v4", pitch:"30×22m", dur:"16 min", equip:"Bibs, cones, 2 goals",
+            setup:"Full width pitch. Goal only counts if preceded by an overlap run (third player runs behind last pass). Normal goal = 0.5 pt only.",
+            rules:[{t:"Goal must be preceded by an overlap run",d:true},{t:"Overlap player cannot stop — must continue run",d:false},{t:"Normal goal = 0.5 pt; overlap goal = 1 pt",d:false},{t:"Wide channel encouraged — use full width",d:false}],
+            scoring:"Normal goal = 0.5 pt. Overlap goal = 1 pt.",
+            cues:["'If 1v1, your partner overlaps'","'Run past, not to'","'Pass sets the overlap'"],
+            look:"Timing of run — early or late?",
+            type:"full_goal" },
+          ssg2:{ name:"4v4 Overlap or Cut-Back", fmt:"4v4", pitch:"30×22m", dur:"16 min", equip:"Bibs, cones, 2 goals",
+            prog:"SSG 1 creates overlap habit → SSG 2 adds a second attacking route: pull-back from byline also scores double. Players must read which option is available.",
+            setup:"Same match. Overlap goal = 2 pts (as before). Cut-back from byline also = 2 pts. Normal goal = 1 pt.",
+            rules:[{t:"Overlap goal = 2 pts (as SSG 1)",d:false},{t:"Cut-back from byline = 2 pts",d:true},{t:"Both routes require a supporting run",d:false},{t:"Normal goal = 1 pt",d:false}],
+            scoring:"Normal goal = 1 pt. Overlap or cut-back goal = 2 pts.",
+            cues:["'Option A or B — look before the touch'","'If overlap blocked, go down the line'","'Cut-back = pass across goal, not a cross'"],
+            look:"Can players identify which option is open or do they default to one?",
+            type:"full_goal" },
+          debrief:"What made you choose overlap vs. go alone? What did the defender's position tell you?" }
+      }
+    ]
+  },
+  {
+    num:4, phase:2,
+    theme:"Receiving Under Pressure & Turning",
+    dates:"26 May – 6 Jun", start:"2026-05-26", end:"2026-06-06",
+    rounds:[5],
+    holiday:null,
+    weeks:[
+      {
+        wk:1,
+        tue:{ date:"Tue 26 May", next:"R5 Sat 6 Jun",
+          theme:"Body shape — half-turn receiving",
+          focuses:["Open body stance before receipt","Scanning before the ball arrives","Protecting ball under pressure","Playing sideways when forward is blocked"],
+          align:"Academy coaches half-turn technique; reinforce in game context Thursday" },
+        thu:{ date:"Thu 28 May",
+          theme:"Receiving under pressure – see before you touch",
+          comp:{ focus:"Receive under pressure — control and hold", detail:"3 channels. Player receives under immediate pressure, must shield and lay off to target. Defender wins point if they steal in 3 sec.", challenge:"Challenge: open body before ball arrives — coach awards form point" },
+          ssg1:{ name:"5v5 Immediate Press", fmt:"5v5", pitch:"32×22m", dur:"16 min", equip:"Bibs, cones, 2 goals",
+            setup:"Defenders press the receiver immediately on ball release (no delay). Receivers must use body position to protect and play quickly.",
+            rules:[{t:"Defenders press immediately on pass release",d:true},{t:"Receiver has 2 touches max under pressure",d:false},{t:"Lay-off to third player = free touch for receiver",d:false},{t:"Goal from open-body receipt = 2 pts (coach judges)",d:false}],
+            scoring:"Goal = 1 pt. Goal from clean open-body control = 2 pts.",
+            cues:["'Half-turn before the ball'","'Short first touch away from pressure'","'Trust your scan'"],
+            look:"Who scans before receiving vs. who looks after the ball arrives?",
+            type:"full_goal" },
+          ssg2:{ name:"5v5 Scan-and-Switch", fmt:"5v5", pitch:"35×24m", dur:"16 min", equip:"Bibs, cones, 2 goals",
+            prog:"SSG 1 teaches receiving under pressure → SSG 2 rewards the next step: after receiving under pressure, switch play quickly to exploit space.",
+            setup:"Add switch-of-play zone. If ball is switched to far side within one pass of receipt, it earns a bonus. Keeps width in play.",
+            rules:[{t:"Immediate press still active",d:false},{t:"Switch of play within one pass of receipt = bonus pt",d:true},{t:"Switch pass must travel at least half pitch width",d:false},{t:"Normal goal = 1 pt",d:false}],
+            scoring:"Goal = 1 pt. Switch + goal in same possession = 2 pts.",
+            cues:["'Far side — is it free?'","'Receive, touch away, switch'","'One action, two steps ahead'"],
+            look:"Do players find the switch or default to the easy short pass?",
+            type:"full_goal" },
+          debrief:"What did scanning give you that looking after the touch didn't? Name one successful switch." }
+      },
+      {
+        wk:2,
+        tue:{ date:"Tue 2 Jun", next:"R5 Sat 6 Jun",
+          theme:"Turning — Cruyff, drag-back, outside turn",
+          focuses:["When to turn (space behind) vs. hold","Disguise before the turn","Driving forward after the turn","Protecting ball mid-turn"],
+          align:"Academy teaches turn mechanics; Thursday converts to game-realistic use" },
+        thu:{ date:"Thu 4 Jun",
+          theme:"Turning with the ball – create the move",
+          comp:{ focus:"Combination entry → 1v1 press and finish", detail:"3 channels. Pair build: one passes, other receives with defender behind, must turn and score.", challenge:"Challenge: name your turn before the round — Cruyff, drag-back, or outside — double if executed" },
+          ssg1:{ name:"4v4 Turn and Score", fmt:"4v4", pitch:"28×20m", dur:"16 min", equip:"Bibs, cones, 2 mini goals",
+            setup:"To score, ball carrier must have completed a turn in the attacking third (180° body direction change with ball). Defender may press immediately.",
+            rules:[{t:"Must complete a recognisable turn in attacking third before goal",d:true},{t:"Turn must evade defender (not a stationary spin)",d:false},{t:"Defender may press immediately on receipt",d:false},{t:"No shooting without a preceding turn from scorer",d:false}],
+            scoring:"Goal after turn = 1 pt. Goal after pre-named turn = 2 pts.",
+            cues:["'Show one side, go the other'","'Drive through after the turn'","'Turn early, not when trapped'"],
+            look:"Confidence turning under pressure — any dummy runs first?",
+            type:"mini_goal" },
+          ssg2:{ name:"4v4 Turn Choice", fmt:"4v4", pitch:"28×20m", dur:"16 min", equip:"Bibs, cones, 2 goals",
+            prog:"SSG 1 forces turns into game → SSG 2 adds pre-commitment: players nominate their turn and must execute it under match pressure.",
+            setup:"Before each 8-min half, each player nominates one turn. If they score using that specific turn, double points. Must still turn to score.",
+            rules:[{t:"Pre-nominated turn = double points if scored with it",d:true},{t:"Normal goal still valid with any turn (1 pt)",d:false},{t:"Must turn to score — no straight shots",d:false},{t:"Players call their own foul if tackled mid-turn",d:false}],
+            scoring:"Goal with any turn = 1 pt. Goal with nominated turn = 2 pts.",
+            cues:["'Commit to your turn — hesitation loses it'","'The turn is your weapon'","'Trust the move you trained'"],
+            look:"Do they attempt their nominated turn or play safe?",
+            type:"full_goal" },
+          debrief:"Did you attempt your nominated turn? What stopped or helped you? When is a turn the wrong choice?" }
+      }
+    ]
+  },
+  {
+    num:5, phase:3,
+    theme:"Team Shape — Defensive Organisation",
+    dates:"9 Jun – 20 Jun", start:"2026-06-09", end:"2026-06-20",
+    rounds:[6,7],
+    holiday:null,
+    weeks:[
+      {
+        wk:1,
+        tue:{ date:"Tue 9 Jun", next:"R6 Sat 13 Jun",
+          theme:"Defensive shape — compact block and line",
+          focuses:["Flat back line — when to hold vs. push","Compactness — squeeze space between lines","Communication — who leads shape calls","Recovery into shape after high press"],
+          align:"Academy coaches 2-line block shape; reinforce 'line, not player' thinking" },
+        thu:{ date:"Thu 11 Jun",
+          theme:"Defensive shape – hold the line",
+          comp:{ focus:"Shape discipline — hold form, earn double", detail:"3 channels. Defender maintains side-on jockey shape for full 1v1. Quality of body position judged.", challenge:"Challenge: final 5 sec — recover to a defined cone after contact" },
+          ssg1:{ name:"5v5 Hold the Line", fmt:"5v5", pitch:"32×22m", dur:"16 min", equip:"Bibs, cones, 2 goals, line cones",
+            setup:"Back 2 assigned a 'line' (cone string). Cannot push above this line until ball enters final third. Must move together. Communication required.",
+            rules:[{t:"Back 2 hold their line until ball enters final third",d:true},{t:"Line moves forward together — no solo stepping up",d:false},{t:"If line breaks, offside waived for that attack",d:false},{t:"Leader calls 'step' or 'hold' — required",d:false}],
+            scoring:"Goal = 1 pt. Goal when line was broken = 2 pts (incentivises shape).",
+            cues:["'Move as a unit'","'Stay in shape, trust your partner'","'Call it — don't wait'"],
+            look:"Does the line move as one or do individuals drift?",
+            type:"full_goal" },
+          ssg2:{ name:"5v5 Shape + Press Trigger", fmt:"5v5", pitch:"32×22m", dur:"16 min", equip:"Bibs, cones, 2 goals",
+            prog:"SSG 1 teaches the block → SSG 2 adds the intelligent exception: one player may break the line to press, but shape must reorganise around them.",
+            setup:"Hold-the-line continues. One designated player may press on back pass (self-identified). Rest must adjust shape to cover the press.",
+            rules:[{t:"Line hold still applies to back 2",d:false},{t:"One press per possession allowed (back pass trigger)",d:true},{t:"Nearest teammate must fill presser's position",d:true},{t:"Ball won from press = free forward counter",d:false}],
+            scoring:"Normal goal = 1 pt. Goal from press-turnover counter = 2 pts.",
+            cues:["'Who's filling?'","'Press and cover — it's a pair'","'Shape first, press second'"],
+            look:"Does someone fill the pressing player's vacated position?",
+            type:"full_goal" },
+          debrief:"What broke the line more — their movement or our communication? What does 'cover the press' mean?" }
+      },
+      {
+        wk:2,
+        tue:{ date:"Tue 16 Jun", next:"R7 Sat 20 Jun",
+          theme:"Attacking shape — width and depth simultaneously",
+          focuses:["Two-sided width — both flanks stretched together","Depth — striker runs into channel","Spacing in possession","Shape on/off the ball"],
+          align:"Academy coaches attacking shape; Thursday games positional awareness" },
+        thu:{ date:"Thu 18 Jun",
+          theme:"Attacking shape – width and depth",
+          comp:{ focus:"Wide entry → cut inside → attack", detail:"3 channels. Wide player receives and cuts inside to score or pass to central runner.", challenge:"Challenge: central player must be moving before wide player receives" },
+          ssg1:{ name:"4v4 Width Game", fmt:"4v4", pitch:"35×25m", dur:"16 min", equip:"Bibs, cones, 2 goals, side channel cones",
+            setup:"Wide channels marked at each side (3m). Goal only counts if at least one pass received in wide channel first. Wide channel: no defensive tackle allowed.",
+            rules:[{t:"At least one pass received in wide channel before goal",d:true},{t:"Wide player must receive, not just be passed through",d:false},{t:"Wide channel is sanctuary — no tackle in channel",d:false},{t:"Normal play everywhere else",d:false}],
+            scoring:"Goal from wide build = 1 pt. Goal using both wide channels in same move = 2 pts.",
+            cues:["'Middle blocked — go wide'","'Wide player — stay wide until called'","'Width creates the gaps'"],
+            look:"Do players drift central or hold width?",
+            type:"wide_channels" },
+          ssg2:{ name:"4v4 Width + Combination", fmt:"4v4", pitch:"35×25m", dur:"16 min", equip:"Bibs, cones, 2 goals",
+            prog:"SSG 1 creates width habits → SSG 2 combines width with combination play from Block 3: go wide, then use a wall pass or overlap to break down the compressed defence.",
+            setup:"Same width rule. Bonus if wide player is involved in a combination (wall pass or overlap) before final pass into goal. Defenders now allowed in wide channel.",
+            rules:[{t:"Wide channel build still required for goal to count",d:false},{t:"Wide + combination in same move = 2 pts",d:true},{t:"Defenders now allowed in wide channel",d:false},{t:"Both flanks must be occupied off the ball",d:false}],
+            scoring:"Normal wide goal = 1 pt. Wide + combination goal = 2 pts.",
+            cues:["'Hold width — then combine'","'Wide + wall pass = the full picture'","'Defenders follow ball, we use the space'"],
+            look:"Can players combine while maintaining shape?",
+            type:"wide_channels" },
+          debrief:"What did width give you? When did you see the combination was available after going wide?" }
+      }
+    ]
+  },
+  {
+    num:6, phase:3,
+    theme:"Building From Back & High Press",
+    dates:"23 Jun – 4 Jul", start:"2026-06-23", end:"2026-07-04",
+    rounds:[8,9],
+    holiday:null,
+    weeks:[
+      {
+        wk:1,
+        tue:{ date:"Tue 23 Jun", next:"R8 Sat 27 Jun",
+          theme:"Playing out from back — GK as first player",
+          focuses:["GK distribution — short vs. long decision","Centre-backs splitting wide on GK ball","Building through thirds","Safety valve — when to play direct"],
+          align:"Academy covers GK distribution and CB build-up; Thursday games the decision under press" },
+        thu:{ date:"Thu 25 Jun",
+          theme:"Playing out from back – build through pressure",
+          comp:{ focus:"Combination build → finish through block", detail:"3 channels. Attacker pair build from end zone past passive defender to score.", challenge:"Challenge: must complete 3 passes in build-up zone before shooting" },
+          ssg1:{ name:"5v5 Build Through Back", fmt:"5v5", pitch:"35×25m", dur:"16 min", equip:"Bibs, cones, 2 goals",
+            setup:"All attacks start from back third (GK/designated player). Two passes in defensive third before crossing halfway. Opponents press only from halfway until ball crosses.",
+            rules:[{t:"All attacks originate from back third",d:true},{t:"Two passes in defensive third before crossing halfway",d:false},{t:"Opponents cannot press in defensive third",d:false},{t:"Long ball over pressure = restart from back",d:false}],
+            scoring:"Goal from legal build = 1 pt. Goal built in under 7 sec from back = 2 pts.",
+            cues:["'Be available — open passing lanes'","'CB: angle body to see both sides'","'Build it — don't bypass it'"],
+            look:"Where does build-up break down — passing, movement, or communication?",
+            type:"full_goal" },
+          ssg2:{ name:"5v5 Build vs. High Press", fmt:"5v5", pitch:"35×25m", dur:"16 min", equip:"Bibs, cones, 2 goals",
+            prog:"SSG 1 gives safe build-up with restricted press → SSG 2 removes that safety: opponents press from restart in any zone, forcing quick decision-making under real pressure.",
+            setup:"Remove halfway restriction. Opponents press from kickoff anywhere. Build-up must still start from GK/back zone. 2-touch in own half under press.",
+            rules:[{t:"High press allowed from restart — no zone restriction",d:true},{t:"Build-up still starts from GK/back zone",d:false},{t:"2-touch in own half under press",d:true},{t:"Counter after winning press = free attack",d:false}],
+            scoring:"Goal via build-up = 1 pt. Goal where team beats full press without going long = 2 pts.",
+            cues:["'See the press coming — adjust body'","'Quick! Play away from pressure'","'Third player: be the safety valve'"],
+            look:"Does pressure cause long balls or do players trust the build-up?",
+            type:"full_goal" },
+          debrief:"When is it smart to play long? What were the two conditions that told you short vs. direct?" }
+      },
+      {
+        wk:2,
+        tue:{ date:"Tue 30 Jun", next:"R9 Sat 4 Jul",
+          theme:"Winning ball high — press structure",
+          focuses:["High press shape — cover shadows","Press triggers in opponent's build-up","What to do when press is beaten","Transition from high press to drop","Pre-holiday: bank Phase 3 learning"],
+          align:"Pre-holiday session — review Phase 3, flag what to carry into Block 7" },
+        thu:{ date:"Thu 2 Jul",
+          theme:"Winning it high – press structure before the break",
+          comp:{ focus:"Press and win sprint — pre-holiday competition", detail:"3 channels, 4 rounds × 90 sec. Sprint from halfway to loose ball at opposite end.", challenge:"Challenge: top team this session gets to design Block 7 Week 1's 1v1 theme" },
+          ssg1:{ name:"4v4 High Press Structured", fmt:"4v4", pitch:"25×18m", dur:"16 min", equip:"Bibs, cones, 2 mini goals",
+            setup:"Front pair presses, back pair holds shape. Press triggered by GK distribution (advanced trigger). If press beaten in 5 seconds, back pair drops immediately.",
+            rules:[{t:"Press triggers on GK distribution only",d:false},{t:"Front pair must press together — no lone press",d:true},{t:"Back pair drops and compacts on press trigger",d:true},{t:"5 seconds to win ball — if not won, drop",d:false}],
+            scoring:"Press turnover goal = 2 pts. Normal goal = 1 pt.",
+            cues:["'Pair press — no lone wolves'","'Back two: drop on GO'","'5 seconds, then we drop'"],
+            look:"Does back pair drop without being told?",
+            type:"mini_goal" },
+          ssg2:{ name:"4v4 Press or Drop — Decide", fmt:"4v4", pitch:"28×20m", dur:"16 min", equip:"Bibs, cones, 2 goals",
+            prog:"SSG 1 builds structured 2-line press → SSG 2 makes it a live decision: press or drop each possession, players decide it themselves.",
+            setup:"No triggers from coach. Team decides each possession whether to press high or drop into block. Must communicate verbally.",
+            rules:[{t:"Full team decision — no coach triggers",d:true},{t:"Decision communicated verbally: 'PRESS' or 'DROP'",d:false},{t:"Mixed message = free kick to attack",d:false},{t:"Consistent decisions earn 1 bonus pt per sequence",d:false}],
+            scoring:"Normal goal = 1 pt. Consistent decision team earns 1 bonus pt per sequence.",
+            cues:["'Communicate before ball arrives'","'Together — never half and half'","'Look at each other — decide in 1 second'"],
+            look:"Any emergent leaders? Mixed messages? Who adjusts when wrong call is made?",
+            type:"full_goal" },
+          debrief:"Pre-holiday takeaway: What's one thing you'll remember from the press when we come back?" }
+      }
+    ]
+  },
+  {
+    num:7, phase:4,
+    theme:"Transition — Winning and Losing the Ball",
+    dates:"21 Jul – 1 Aug", start:"2026-07-21", end:"2026-08-01",
+    rounds:[10,11,12],
+    holiday:{ label:"Matariki + School Holidays", dates:"7 Jul – 18 Jul · ⚠ R10 Sat 18 Jul has no training week preceding it" },
+    weeks:[
+      {
+        wk:1,
+        tue:{ date:"Tue 21 Jul", next:"R11 Sat 25 Jul",
+          theme:"Transition — first pass after winning possession",
+          focuses:["Speed of transition thought: win → look → play","First pass: forward is the priority","Support positions for the ball winner","Reading play before turnover happens"],
+          align:"Post-holiday first session — 10 min reconnection game before theme focus" },
+        thu:{ date:"Thu 23 Jul",
+          theme:"Transition – first pass forward after winning",
+          comp:{ focus:"Recover and counter race", detail:"3 channels. Defender wins ball, ball placed at far end — race to it. First to win and score earns team point.", challenge:"Challenge: winner must name direction they're countering before race begins" },
+          ssg1:{ name:"4v4 Forward First", fmt:"4v4", pitch:"28×20m", dur:"16 min", equip:"Bibs, cones, 2 goals",
+            setup:"On any possession change, team that wins ball must play first pass forward within 3 seconds. If no forward option, second pass must be forward.",
+            rules:[{t:"First pass after winning must be forward within 3 seconds",d:true},{t:"If unavailable: second pass must be forward",d:false},{t:"Backward first pass (non-emergency) = free kick",d:false},{t:"Goal from forward-first transition = 2 pts",d:false}],
+            scoring:"Normal goal = 1 pt. Forward-first transition goal = 2 pts.",
+            cues:["'Win it — look forward immediately'","'First touch out, second touch forward'","'Who's already running?'"],
+            look:"Are players scanning before winning the ball?",
+            type:"full_goal" },
+          ssg2:{ name:"4v4 Reach the Third", fmt:"4v4", pitch:"32×22m", dur:"16 min", equip:"Bibs, cones, 2 goals",
+            prog:"SSG 1 trains forward first pass → SSG 2 extends the demand: don't just play forward, advance ball into attacking third within 5 seconds.",
+            setup:"Same forward-first rule. Add: counter must reach attacking third within 5 seconds of winning possession. Defenders sprint to recover.",
+            rules:[{t:"Forward first pass within 3 sec (as SSG 1)",d:false},{t:"Ball must reach attacking third within 5 sec",d:true},{t:"If not reached in 5 sec — normal play, no bonus",d:false},{t:"Defender sprints to recover — no free runs",d:false}],
+            scoring:"Goal from reaching third in 5 sec = 2 pts. Normal goal = 1 pt.",
+            cues:["'Speed of thought — know where you're going before you get there'","'Carry it if needed'","'No time — attack!'"],
+            look:"Does urgency cause mistakes or sharpen execution?",
+            type:"full_goal" },
+          debrief:"What's the mental difference between possession thinking and counter thinking?" }
+      },
+      {
+        wk:2,
+        tue:{ date:"Tue 28 Jul", next:"R12 Sat 1 Aug",
+          theme:"Losing the ball — immediate press reaction",
+          focuses:["Immediate press on loss (first 3 seconds)","Counter-press vs. drop — when to choose","Compactness after losing high vs. deep","Reading teammate's body — who presses, who covers"],
+          align:"Academy focuses on in-game reactions; reinforce the 3-second rule for immediate reaction" },
+        thu:{ date:"Thu 30 Jul",
+          theme:"Losing the ball – press in 3 seconds",
+          comp:{ focus:"Press trigger — who goes first", detail:"3 channels. Both players sprint to ball. First arrives must jockey; second supports. Coach judges quality.", challenge:"Challenge: supporting player must arrive within 2 steps of presser — no solo press" },
+          ssg1:{ name:"4v4 Press on Loss", fmt:"4v4", pitch:"25×18m", dur:"16 min", equip:"Bibs, cones, 2 mini goals",
+            setup:"3-second counter-press window on turnover. Team that just lost ball must press ball carrier within 3 seconds. If not retrieved, drop into shape.",
+            rules:[{t:"3-second counter-press window on every turnover",d:true},{t:"Nearest player presses — not optional",d:false},{t:"Second player covers — no two chasing same ball",d:false},{t:"After 3 sec without winning: drop to shape immediately",d:false}],
+            scoring:"Turnover in 3 sec window = bonus pt. Normal goal = 1 pt.",
+            cues:["'Lose it — press it — 3 seconds!'","'One presses, one covers'","'Don't chase past 3 — drop!'"],
+            look:"Response time — how quickly does pressing reaction begin?",
+            type:"mini_goal" },
+          ssg2:{ name:"4v4 Press vs. Drop Decision", fmt:"4v4", pitch:"28×20m", dur:"16 min", equip:"Bibs, cones, 2 goals",
+            prog:"SSG 1 trains the counter-press reaction → SSG 2 adds the phase switch: after failing the press, recognise it and switch to phase 2 without panic.",
+            setup:"Two-phase defending. Phase 1: 3-sec press window. If not won: Phase 2 — 'DROP' called by any player, all four must be in block within 3 sec.",
+            rules:[{t:"3-sec press attempt first",d:false},{t:"If press fails: immediate 'DROP' from any player",d:true},{t:"All four in block within 3 sec of 'DROP' call",d:true},{t:"Mixed phase (some pressing, some dropping) = free kick",d:false}],
+            scoring:"Goal from press turnover = 2 pts. Normal goal = 1 pt. Clean phase switch = session bonus pt.",
+            cues:["'Communicate the phase!'","'Press — fail — drop — together'","'No shame in dropping'"],
+            look:"Do players accept the failed press and switch cleanly?",
+            type:"full_goal" },
+          debrief:"What's the signal the press failed and it's time to drop? Why is a clean drop better than chasing?" }
+      }
+    ]
+  },
+  {
+    num:8, phase:4,
+    theme:"Counter-Attack & Defensive Counter",
+    dates:"4 Aug – 15 Aug", start:"2026-08-04", end:"2026-08-15",
+    rounds:[13,14],
+    holiday:null,
+    weeks:[
+      {
+        wk:1,
+        tue:{ date:"Tue 4 Aug", next:"R13 Sat 8 Aug",
+          theme:"Counter-attack — speed, angles, finish",
+          focuses:["Trigger runs before ball is won","Carrying ball at pace into space","Combination at speed — wall pass in transition","Finishing under fatigue and pressure"],
+          align:"Academy works transition attacking; link to Thursday's counter scenarios" },
+        thu:{ date:"Thu 6 Aug",
+          theme:"Counter-attack – speed and decision",
+          comp:{ focus:"5-second finisher — score within 5 seconds of receiving", detail:"3 channels. Player receives rolling ball from 10m, has 5 seconds to beat defender and score.", challenge:"Challenge: beat defender inside 5m — score from inside the box only" },
+          ssg1:{ name:"3v2 Counter Waves", fmt:"3v2 continuous waves", pitch:"28×20m", dur:"16 min", equip:"Bibs, cones, 2 goals, ball supply",
+            setup:"Continuous 3v2. On goal or turnover, coach feeds new ball to previous defenders (now 3 attackers). High intensity, fast transitions throughout.",
+            rules:[{t:"3v2 advantage — must exploit the overload",d:false},{t:"No reset between waves — immediate restart from coach feed",d:false},{t:"Goal within 5 touches of feed = 2 pts",d:true},{t:"Pace is mandatory — cannot slow down",d:false}],
+            scoring:"Normal counter goal = 1 pt. Goal in 5 touches from feed = 2 pts.",
+            cues:["'Go at pace — hold for pace, not possession'","'Wide player: far post run'","'First touch sets direction'"],
+            look:"Decision-making at speed — right option in transition?",
+            type:"full_goal" },
+          ssg2:{ name:"Open Match — Counter Mindset", fmt:"4v4", pitch:"30×22m", dur:"16 min", equip:"Bibs, cones, 2 goals",
+            prog:"SSG 1 builds counter skill in structured waves → SSG 2 takes it into open game: players must recognise counter opportunities and choose to take them.",
+            setup:"Open match. Counter rule: ball won in own half, attack reaches goal within 6 seconds = double. Players must self-identify the counter moment.",
+            rules:[{t:"Counter goal (won own half, finish within 6 sec) = 2 pts",d:true},{t:"Possession goal = 1 pt (still valid)",d:false},{t:"No structured waves — players decide when to counter",d:false},{t:"Counter must involve at least 2 players",d:false}],
+            scoring:"Counter goal = 2 pts. Normal possession goal = 1 pt.",
+            cues:["'Is this a counter moment? Go!'","'Read the space before the win'","'Counter or build — 1 second decision'"],
+            look:"Who recognises counter moments vs. slowing into possession?",
+            type:"full_goal" },
+          debrief:"Name one counter moment. What told you it was on? What was your first touch in that moment?" }
+      },
+      {
+        wk:2,
+        tue:{ date:"Tue 11 Aug", next:"R14 Sat 15 Aug",
+          theme:"Defending the counter — recover and reform",
+          focuses:["Sprint recovery path after losing ball high","Last defender 1v1 — delay, not win","Who tracks who — recovery assignment","Compact block after failed press"],
+          align:"Academy works recovery sprints and last-ditch defending; link to Thursday's recovery game" },
+        thu:{ date:"Thu 13 Aug",
+          theme:"Defending the counter – recover and hold",
+          comp:{ focus:"Recovery sprint race", detail:"3 channels. Attacker starts at halfway with ball; defender 10m behind. Defender recovers to prevent goal.", challenge:"Challenge: defender can only tackle inside the box — must delay outside until there" },
+          ssg1:{ name:"4v4 Recover Shape", fmt:"4v4", pitch:"30×22m", dur:"16 min", equip:"Bibs, cones, 2 goals",
+            setup:"When ball is turned over in attacking half, defending team gets 3 seconds to recover into shape before ball can be played forward.",
+            rules:[{t:"3-second recovery window on turnovers in attacking half",d:true},{t:"Last defender must get goal-side before window closes",d:false},{t:"If shape not recovered: counter is free (no restrictions)",d:false},{t:"Bonus for team that recovers clean shape every time in a half",d:false}],
+            scoring:"Normal goal = 1 pt. Goal from free counter (shape not recovered) = 2 pts.",
+            cues:["'Sprint back — don't jog'","'Goal-side first — then shape'","'Who's last? Everyone knows their job'"],
+            look:"Speed of recovery and communication about who covers which runner.",
+            type:"full_goal" },
+          ssg2:{ name:"4v4 Press or Recover Decision", fmt:"4v4", pitch:"32×24m", dur:"16 min", equip:"Bibs, cones, 2 goals",
+            prog:"SSG 1 focuses on recovery → SSG 2 brings back the press/drop choice: now with counter timing added, players manage all three phases — win it, press it, or drop it.",
+            setup:"Open match. On losing ball in attacking half: A) counter-press within 3 sec, or B) sprint recover into block. Team communicates which option. Consistency rewarded.",
+            rules:[{t:"Team communicates A (press) or B (recover) on every turnover",d:true},{t:"Split decision = free kick to attack",d:true},{t:"Correct press win = 2 pts; correct recover + goal = 2 pts",d:false},{t:"First caller leads the team",d:false}],
+            scoring:"Executed correct call goal = 2 pts. Normal goal = 1 pt.",
+            cues:["'A or B — say it NOW'","'First caller commits everyone'","'Right decision together beats right decision apart'"],
+            look:"Communication leaders — any emergent voice calling the phase?",
+            type:"full_goal" },
+          debrief:"What made you call A instead of B? When is recovering smarter, even when you could press?" }
+      }
+    ]
+  },
+  {
+    num:9, phase:5,
+    theme:"Multi-Concept Scenarios",
+    dates:"18 Aug – 29 Aug", start:"2026-08-18", end:"2026-08-29",
+    rounds:[15,16],
+    holiday:null,
+    weeks:[
+      {
+        wk:1,
+        tue:{ date:"Tue 18 Aug", next:"R15 Sat 22 Aug",
+          theme:"Combined — press + counter in same possession",
+          focuses:["Reading press triggers at high tempo","Counter into wide space after press win","Holding shape while pressing with one player","Multi-event possession sequence"],
+          align:"Academy uses match analysis; link to Thursday's triple-constraint game" },
+        thu:{ date:"Thu 20 Aug",
+          theme:"Multi-concept – press, win, counter combined",
+          comp:{ focus:"Player-designed 1v1 rules", detail:"Teams vote on their own 1v1 rule before session begins. Adds player ownership.", challenge:"Challenge: if you win using your team's rule, double points" },
+          ssg1:{ name:"5v5 Triple Constraint", fmt:"5v5", pitch:"35×25m", dur:"16 min", equip:"Bibs, cones, 2 goals",
+            setup:"Three simultaneous constraints: (1) 2-touch max in own half, (2) press on back pass (self-triggered), (3) counter must reach final third within 5 sec of winning. All three active.",
+            rules:[{t:"2-touch max in own half",d:true},{t:"Press on back pass (self-triggered)",d:true},{t:"Counter to final third within 5 sec of winning",d:true},{t:"Goal = 2 pts only if all three constraints adhered to; broken constraint = 0.5 pt",d:false}],
+            scoring:"Goal with all three constraints = 2 pts. Any constraint broken = 0.5 pt.",
+            cues:["'All three — you know them'","'Don't think about rules — play through them'","'This is match speed'"],
+            look:"Which players absorb all three constraints and which break under load?",
+            type:"full_goal" },
+          ssg2:{ name:"5v5 Match State: Trailing by 1", fmt:"5v5", pitch:"35×25m", dur:"16 min", equip:"Bibs, cones, 2 goals",
+            prog:"SSG 1 trains multi-constraint execution → SSG 2 embeds those skills in a real match-state context: trailing team must use everything learned under match pressure.",
+            setup:"One team told they trail by 1 with 5 minutes left. Must equalise — high urgency, aggressive press, risk forward. Other team protects the lead.",
+            rules:[{t:"Trailing team must press immediately — no passive defending",d:true},{t:"Leading team may play possession — time-wasting allowed",d:false},{t:"Trailing team goal = 2 pts (simulates equaliser value)",d:false},{t:"Leading team clean sheet from restart = bonus",d:false}],
+            scoring:"Trailing team goal = 2 pts. Leading team clean sheet = 1 pt.",
+            cues:["'You need a goal — what does that change?'","'Risk it — this is when you turn it on'","'Urgency without chaos'"],
+            look:"Does trailing team use learned skills or revert to hoofing?",
+            type:"full_goal" },
+          debrief:"When trailing, which skills came naturally and which did you forget? That's your personal development list." }
+      },
+      {
+        wk:2,
+        tue:{ date:"Tue 25 Aug", next:"R16 Sat 29 Aug",
+          theme:"Game management — leading and protecting",
+          focuses:["Possession with purpose when leading","Pressing intensity when trailing","Reading the scoreline — when to risk vs. protect","Final round preparation"],
+          align:"Pre-final-round session: specific game management vs. match scenarios" },
+        thu:{ date:"Thu 27 Aug",
+          theme:"Game management – lead, protect, chase",
+          comp:{ focus:"Player-designed rules", detail:"Each team designs the entire 1v1 competition. They set rules, scoring, and challenge. Coach only observes.", challenge:"Challenge: must include a skill component (specific move, touch limit, or recovery rule)" },
+          ssg1:{ name:"4v4 Lead and Protect", fmt:"4v4", pitch:"28×20m", dur:"16 min", equip:"Bibs, cones, 2 goals",
+            setup:"One team given a 2-0 lead and plays to protect. Other team plays to overturn. After 8 min, roles reverse. Players experience both sides.",
+            rules:[{t:"Leading team: possession-first, no risks in own half",d:false},{t:"Trailing team: high press mandatory from restart",d:true},{t:"Leading team build goal (5+ passes) = 2 pts",d:false},{t:"Trailing team press-turnover goal = 2 pts",d:true}],
+            scoring:"Trailing goal = 2 pts. Leading team maintains lead to half-time = 1 pt.",
+            cues:["'You're winning — what does that mean for your risk?'","'Protect the ball, not just the goal'","'Smart possession beats panic'"],
+            look:"Does the leading team stay patient or panic-press?",
+            type:"full_goal" },
+          ssg2:{ name:"5v5 Full Scenario Game", fmt:"5v5", pitch:"35×25m", dur:"16 min", equip:"Bibs, cones, 2 goals",
+            prog:"SSG 1 gives experience of both roles in fixed scenario → SSG 2 adds unpredictability: match state called fresh each half, forcing fast mental adjustment.",
+            setup:"Two 8-min halves with different match states declared at each half (0-0 / trailing 1 / leading 1). Players must adapt approach to each state.",
+            rules:[{t:"Coach declares match state at start of each half",d:false},{t:"All season constraints available — players choose which to apply",d:true},{t:"Players set their own press/drop decisions without coach",d:true},{t:"After game: players discuss what they chose and why",d:false}],
+            scoring:"Normal match scoring. Coach notes quality of decisions, not just goals.",
+            cues:["'What's the score? How does that change everything?'","'Choose your approach — own it'","'Trust what you know'"],
+            look:"Player autonomy — who leads, communicates, adapts?",
+            type:"full_goal" },
+          debrief:"At 1-0 up with 5 minutes left, what would you tell your team? Where did that knowledge come from?" }
+      }
+    ]
+  },
+  {
+    num:10, phase:5,
+    theme:"Player Autonomy & Season Close",
+    dates:"1 Sep – 5 Sep", start:"2026-09-01", end:"2026-09-05",
+    rounds:[17],
+    holiday:null,
+    weeks:[
+      {
+        wk:1,
+        tue:{ date:"Tue 1 Sep", next:"R17 Sat 5 Sep",
+          theme:"Player-led — own the session",
+          focuses:["Player-designed session structure","Peer coaching moments","Review season arc — what do you know now?","Set personal off-season targets"],
+          align:"Academy: final technical session + season review. Share back to team." },
+        thu:{ date:"Thu 3 Sep",
+          theme:"Player autonomy – read the game, design the play",
+          comp:{ focus:"Full player-designed competition", detail:"Players set format, channels, scoring, and rules. Coach is neutral. Teams elect their own 1v1 captain.", challenge:"Challenge: named entirely by the players — coach does not set it" },
+          ssg1:{ name:"5v5 Free Game", fmt:"5v5 open", pitch:"35×25m (player-chosen)", dur:"16 min", equip:"Player-selected",
+            setup:"Open game — no constraints from coach. Players self-referee, call their own fouls, set own rules. Coach observes only.",
+            rules:[{t:"Players self-referee — no coach calls",d:false},{t:"Players can add own rules mid-game by team agreement",d:false},{t:"Coach does not intervene unless safety concern",d:false},{t:"Observe: what do they choose with full freedom?",d:false}],
+            scoring:"Player-set scoring system.",
+            cues:["[Silent — observe only]"],
+            look:"Do players apply season skills naturally? What do they default to under no constraints?",
+            type:"full_goal" },
+          ssg2:{ name:"Mini Round-Robin Tournament", fmt:"3 teams × 3 games", pitch:"25×18m per pitch", dur:"16 min", equip:"Bibs, cones, goals",
+            prog:"SSG 1 gives full freedom → SSG 2 adds competitive tournament pressure: make decisions across multiple games, managing energy and tactics.",
+            setup:"Three teams, round-robin 5-minute games. Between games: 60-sec player-led tactical huddle. Coach is silent throughout.",
+            rules:[{t:"Standard match rules — player-enforced",d:false},{t:"60-sec tactical huddle between games (player-led)",d:false},{t:"Each team must try at least one tactical adjustment between games",d:false},{t:"Winner gets to set next season's first 1v1 theme",d:false}],
+            scoring:"Tournament: W=3, D=1, L=0. Players track and announce results.",
+            cues:["[Observe]","[Listen to tactical huddles]","[Celebrate their decisions]"],
+            look:"Tactical thinking, communication, resilience under competition — the full season in miniature.",
+            type:"mini_goal" },
+          debrief:"Final question: compared to April, what do you know now that you didn't? What do you want to be even better at?" }
+      }
+    ]
+  }
+];
+
+// ============================
+// SVG PITCH DIAGRAMS
+// ============================
+function pitchSVG(type) {
+  const W = 300, H = 180;
+  const A = (cx,cy) => `<g transform="translate(${cx},${cy})"><circle r="7" fill="#1a2e52"/><text y="4" font-size="8" fill="white" text-anchor="middle" font-weight="bold">A</text></g>`;
+  const B = (cx,cy) => `<g transform="translate(${cx},${cy})"><circle r="7" fill="#c8102e"/><text y="4" font-size="8" fill="white" text-anchor="middle" font-weight="bold">B</text></g>`;
+  const ball = (cx,cy) => `<circle cx="${cx}" cy="${cy}" r="5" fill="#c9993a"/>`;
+  const base = `<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg">
+    <rect width="${W}" height="${H}" rx="4" fill="#4ade80" fill-opacity="0.25"/>
+    <rect x="6" y="6" width="${W-12}" height="${H-12}" rx="2" fill="none" stroke="#16a34a" stroke-width="1.5"/>
+    <line x1="${W/2}" y1="6" x2="${W/2}" y2="${H-6}" stroke="#16a34a" stroke-width="1" stroke-dasharray="4,3"/>`;
+
+  let c = '';
+  if (type === 'possession') {
+    c = A(65,45)+A(90,105)+A(55,140)+B(210,55)+B(230,110)+B(195,145)+ball(148,88);
+  } else if (type === 'mini_goal') {
+    c = `<rect x="8" y="${H/2-15}" width="6" height="30" fill="#f1f5f9" rx="1"/>
+         <rect x="${W-14}" y="${H/2-15}" width="6" height="30" fill="#f1f5f9" rx="1"/>`
+      +A(85,50)+A(100,115)+A(68,88)+B(195,50)+B(210,115)+B(228,88)+ball(148,88);
+  } else if (type === 'full_goal') {
+    c = `<rect x="8" y="${H/2-22}" width="8" height="44" fill="#f1f5f9" rx="1"/>
+         <rect x="${W-16}" y="${H/2-22}" width="8" height="44" fill="#f1f5f9" rx="1"/>`
+      +A(80,45)+A(110,90)+A(80,135)+A(55,88)+B(200,45)+B(210,90)+B(200,135)+B(235,88)+ball(148,88);
+  } else if (type === 'corner_goals') {
+    c = `<rect x="8" y="10" width="22" height="12" fill="#22c55e" rx="1"/>
+         <rect x="${W-30}" y="10" width="22" height="12" fill="#22c55e" rx="1"/>
+         <rect x="8" y="${H-22}" width="22" height="12" fill="#22c55e" rx="1"/>
+         <rect x="${W-30}" y="${H-22}" width="22" height="12" fill="#22c55e" rx="1"/>`
+      +A(95,70)+A(78,118)+A(125,130)+B(188,60)+B(215,112)+B(175,140)+ball(148,88);
+  } else if (type === 'wide_channels') {
+    c = `<rect x="8" y="8" width="18" height="${H-16}" fill="rgba(14,165,233,0.15)" rx="1"/>
+         <rect x="${W-26}" y="8" width="18" height="${H-16}" fill="rgba(14,165,233,0.15)" rx="1"/>
+         <rect x="8" y="${H/2-22}" width="8" height="44" fill="#f1f5f9" rx="1"/>
+         <rect x="${W-16}" y="${H/2-22}" width="8" height="44" fill="#f1f5f9" rx="1"/>`
+      +A(20,50)+A(95,88)+A(20,130)+A(78,88)+B(260,50)+B(188,88)+B(260,130)+B(205,88)+ball(148,88);
+  }
+  return base + c + '</svg>';
+}
+
+// ============================
+// RENDER HELPERS
+// ============================
+let idCounter = 0;
+function uid() { return 'x' + (++idCounter); }
+
+function renderPhases() {
+  return `<div class="phases">${PHASES.map(p => `
+    <div class="phase-card phase-${p.num}">
+      <div class="phase-label" style="color:var(--${p.color})">${p.label} · Blocks ${p.blocks}</div>
+      <div class="phase-title">${p.title}</div>
+    </div>`).join('')}</div>`;
+}
+
+function renderMatches() {
+  return `<div class="section" id="matches">
+    <div class="section-title">Match Calendar — 17 Rounds</div>
+    <div class="match-grid">${MATCHES.map(m => {
+      const cls = m.holiday ? 'holiday' : m.note ? 'warn' : '';
+      const label = m.holiday ? '–' : (typeof m.r === 'number' ? `R${m.r}` : m.r);
+      return `<div class="match-pill ${cls}">
+        <div class="round">${label}</div>
+        <div class="date">${m.date}</div>
+        ${m.note ? `<div class="note">${m.note}</div>` : ''}
+      </div>`;
+    }).join('')}
+    </div>
+  </div>`;
+}
+
+function renderSSG(ssg, num) {
+  const id = uid();
+  const is2 = num === 2;
+  return `<div class="ssg-block" id="${id}">
+    <div class="ssg-header" onclick="tog('${id}','ssg-block')">
+      <div class="ssg-num ${is2?'ssg2':''}">${num}</div>
+      <div class="ssg-info">
+        <div class="ssg-name">${ssg.name}</div>
+        <div class="ssg-format">${ssg.fmt} · ${ssg.pitch} · ${ssg.dur}</div>
+      </div>
+      <div class="ssg-chevron">▼</div>
+    </div>
+    <div class="ssg-body">
+      ${is2 && ssg.prog ? `<div class="progression"><div class="prog-arrow">↗</div><div class="prog-text"><strong>Progression from SSG 1:</strong> ${ssg.prog}</div></div>` : ''}
+      <div class="pitch-wrap">${pitchSVG(ssg.type)}</div>
+      <div class="detail-grid">
+        <div class="detail-item"><div class="detail-key">Format</div><div class="detail-val">${ssg.fmt}</div></div>
+        <div class="detail-item"><div class="detail-key">Pitch</div><div class="detail-val">${ssg.pitch}</div></div>
+        <div class="detail-item"><div class="detail-key">Duration</div><div class="detail-val">${ssg.dur}</div></div>
+        <div class="detail-item"><div class="detail-key">Equipment</div><div class="detail-val">${ssg.equip}</div></div>
+      </div>
+      <div class="setup-text">${ssg.setup}</div>
+      <div class="rules-title">Rules</div>
+      <div>${ssg.rules.map(r => `<div class="rule-item${r.d?' dual':''}"><span class="rule-dot">•</span><span>${r.t}</span></div>`).join('')}</div>
+      <div class="scoring"><strong>Scoring</strong>${ssg.scoring}</div>
+      <div class="cues-block">
+        <div class="cues-title">Coaching Cues</div>
+        ${ssg.cues.map(c => `<div class="cue-item">${c}</div>`).join('')}
+      </div>
+      <div class="lookfor"><strong>Look For</strong>${ssg.look}</div>
+    </div>
+  </div>`;
+}
+
+function renderThu(thu) {
+  const id = uid();
+  return `<div class="session-card thu-card" id="${id}">
+    <div class="session-header" onclick="tog('${id}','session-card')">
+      <div>
+        <div><span class="session-tag thu-tag">Thu · Team · 40 min · SSG</span></div>
+        <div class="session-title">${thu.date}</div>
+        <div class="session-sub">Theme: ${thu.theme}</div>
+      </div>
+      <div class="session-chevron">▼</div>
+    </div>
+    <div class="session-body">
+      <div class="thu-theme">📌 ${thu.theme}</div>
+      <div class="comp-block">
+        <div class="comp-title">⚡ 1v1 Competition · 8 min</div>
+        <div class="comp-detail">${thu.comp.detail}</div>
+        <div class="comp-challenge">Focus: ${thu.comp.focus}</div>
+        <div style="font-size:12px;color:var(--muted);margin-top:2px">${thu.comp.challenge}</div>
+      </div>
+      ${renderSSG(thu.ssg1, 1)}
+      ${renderSSG(thu.ssg2, 2)}
+      <div class="debrief"><strong>Debrief Question</strong>${thu.debrief}</div>
+    </div>
+  </div>`;
+}
+
+
+function renderBlock(b, badge) {
+  const id = `block${b.num}`;
+  const phase = PHASES.find(p => p.num === b.phase);
+  return `<div class="block block-phase-${b.phase}" id="${id}">
+    <div class="block-header" onclick="tog('${id}','block')">
+      <div>
+        <div class="block-meta">
+          <span class="block-num p${b.phase}">Block ${b.num}</span>
+          <span class="phase-badge p${b.phase}">${phase.label}</span>
+          ${badge ? `<span class="${badge==='NOW'?'current-badge':'upcoming-badge'}">${badge==='NOW'?'▶ Current':'Next Up'}</span>` : ''}
+        </div>
+        <div class="block-title">${b.theme}</div>
+        <div class="block-dates">${b.dates}${b.rounds.length?' · R'+b.rounds.join(', R'):''}</div>
+      </div>
+      <div class="chevron">▼</div>
+    </div>
+    <div class="block-body">
+      ${b.holiday ? `<div class="holiday-banner">📅 ${b.holiday.label}: ${b.holiday.dates} — sessions resume ${b.weeks[0].tue.date}</div>` : ''}
+      ${b.weeks.map((w,i) => `
+        ${i > 0 ? '<hr>' : ''}
+        <div class="week-label">Week ${w.wk} · ${w.thu.date}${w.tue.next ? ` · ⚽ ${w.tue.next}` : ''}</div>
+        ${renderThu(w.thu)}
+      `).join('')}
+    </div>
+  </div>`;
+}
+
+function tog(id, cls) {
+  document.getElementById(id).classList.toggle('open');
+}
+
+function navTo(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  // Expand block if collapsed
+  if (el.classList.contains('block')) el.classList.add('open');
+  // Highlight active nav link
+  document.querySelectorAll('.nav a').forEach(a => a.classList.remove('active'));
+  const active = document.querySelector(`.nav a[data-target="${id}"]`);
+  if (active) active.classList.add('active');
+  // Small timeout to let expand repaint, then scroll
+  setTimeout(() => {
+    const navH = document.querySelector('.nav').offsetHeight;
+    const top = el.getBoundingClientRect().top + document.documentElement.scrollTop - navH - 8;
+    document.documentElement.scrollTop = top;
+  }, 50);
+}
+
+function render() {
+  const nav = document.getElementById('navLinks');
+
+  // Wire up all nav links (Matches already in HTML with data-target set)
+  nav.querySelectorAll('a').forEach(a => {
+    const target = a.dataset.target;
+    if (target) {
+      a.addEventListener('click', (e) => { e.preventDefault(); navTo(target); });
+    }
+  });
+
+  BLOCKS.forEach(b => {
+    const a = document.createElement('a');
+    a.href = '#';
+    a.dataset.target = `block${b.num}`;
+    a.textContent = `B${b.num}`;
+    a.addEventListener('click', (e) => { e.preventDefault(); navTo(`block${b.num}`); });
+    nav.appendChild(a);
+  });
+  // Determine current / next block
+  const today = new Date();
+  today.setHours(0,0,0,0);
+  let activeBlock = null, activeBadge = null;
+  for (const b of BLOCKS) {
+    const s = new Date(b.start), e = new Date(b.end);
+    if (today >= s && today <= e) { activeBlock = b; activeBadge = 'NOW'; break; }
+  }
+  if (!activeBlock) {
+    for (const b of BLOCKS) {
+      if (new Date(b.start) > today) { activeBlock = b; activeBadge = 'NEXT'; break; }
+    }
+  }
+
+  let html = renderPhases();
+  html += `<div class="section"><div class="section-title">Training Blocks</div></div>`;
+  BLOCKS.forEach(b => { html += renderBlock(b, activeBlock && b.num === activeBlock.num ? activeBadge : null); });
+  html += renderMatches();
+  document.getElementById('app').innerHTML = html;
+
+  // Auto-open and scroll to active block
+  if (activeBlock) {
+    setTimeout(() => navTo(`block${activeBlock.num}`), 300);
+  }
+}
+
+render();
+</script>
+</body>
+</html>
