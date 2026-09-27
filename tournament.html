@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <title>Fencibles All Stars · Auckland United Tournament</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --navy: #15294d; --navy-mid: #1f3560; --navy-deep: #0a1428;
+      --gold: #e0a92e; --gold-light: #f0c968;
+      --def-bg: #1E4D7B; --def-text: #7EC8F4;
+      --mid-bg: #1A4A35; --mid-text: #68D4A4;
+      --st-bg:  #5A1E2E; --st-text:  #F4A0B0;
+      --gk-bg: rgba(255,255,255,0.10); --gk-text: rgba(255,255,255,0.6);
+      --sub-bg: #40300a; --border: rgba(224,169,46,0.18);
+      --page: #0d1a33;
+    }
+    body { background: var(--page); color: #fff; font-family: 'IBM Plex Sans', system-ui, sans-serif; font-size: 15px; line-height: 1.5; -webkit-text-size-adjust: 100%; }
+    .wrap { max-width: 480px; margin: 0 auto; }
+
+    /* ── Gate ── */
+    #gate { position:fixed; inset:0; z-index:9999; background:linear-gradient(135deg,#15294d 0%,#0a1428 100%); display:flex; align-items:center; justify-content:center; padding:24px; }
+    #gate.hidden { display:none; }
+    .gate-card { background:#fff; border-radius:16px; padding:32px 28px; width:100%; max-width:340px; text-align:center; box-shadow:0 8px 32px rgba(0,0,0,0.3); }
+    .gate-badge { font-size:36px; margin-bottom:12px; }
+    .gate-title { font-size:18px; font-weight:800; color:#15294d; margin-bottom:4px; }
+    .gate-sub { font-size:13px; color:#5a6a82; margin-bottom:24px; }
+    .gate-input { width:100%; border:2px solid #cdd5e0; border-radius:10px; padding:12px 14px; font-size:16px; text-align:center; letter-spacing:2px; color:#15294d; outline:none; transition:border-color 0.2s; }
+    .gate-input:focus { border-color:#15294d; }
+    .gate-input.error { border-color:#c8102e; animation:shake 0.3s; }
+    .gate-btn { margin-top:12px; width:100%; background:#15294d; color:#fff; border:none; border-radius:10px; padding:13px; font-size:15px; font-weight:700; cursor:pointer; }
+    .gate-btn:active { background:#0a1428; }
+    .gate-error { color:#c8102e; font-size:12px; margin-top:8px; min-height:18px; }
+    .gate-gold { color:#e0a92e; }
+    @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-6px)} 75%{transform:translateX(6px)} }
+
+    /* ── Hero ── */
+    .hero { background: linear-gradient(135deg, var(--navy) 0%, var(--navy-deep) 100%); padding: 22px 16px 18px; text-align: center; border-bottom: 3px solid var(--gold); }
+    .hero .crest { font-size: 30px; line-height: 1; }
+    .hero h1 { font-family: 'Bebas Neue', sans-serif; font-size: 26px; letter-spacing: 0.04em; color: var(--gold); margin-top: 6px; }
+    .hero .sub { color: rgba(255,255,255,0.72); font-size: 12.5px; margin-top: 3px; }
+    .hero .meta { color: rgba(255,255,255,0.5); font-size: 11px; margin-top: 6px; text-transform: uppercase; letter-spacing: 0.06em; }
+    .hero-stats { display: flex; justify-content: center; gap: 8px; margin-top: 14px; }
+    .hstat { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.14); border-radius: 8px; padding: 7px 12px; min-width: 60px; }
+    .hstat b { display:block; font-family:'Bebas Neue',sans-serif; font-size: 19px; color:#fff; letter-spacing:0.03em; }
+    .hstat span { font-size: 9px; color: rgba(255,255,255,0.6); text-transform: uppercase; letter-spacing: 0.05em; }
+
+    /* ── Day + game tabs ── */
+    .gamebar { position: sticky; top: 0; z-index: 50; background: var(--navy); border-bottom: 2px solid var(--gold); padding: 8px 10px; }
+    .daygroup { display: flex; align-items: center; gap: 6px; }
+    .daygroup + .daygroup { margin-top: 7px; }
+    .daylabel { font-family:'Bebas Neue',sans-serif; font-size: 12px; letter-spacing: 0.08em; color: rgba(255,255,255,0.5); min-width: 42px; }
+    .gtabs { display: flex; gap: 6px; flex: 1; }
+    .gtab { flex: 1; background: var(--navy-mid); border: 1px solid var(--border); border-radius: 8px; padding: 6px 4px; text-align: center; cursor: pointer; transition: all 0.15s; }
+    .gtab.active { background: var(--gold); border-color: var(--gold); }
+    .gtab .gt-n { font-family:'Bebas Neue',sans-serif; font-size: 15px; color: var(--gold); line-height: 1; }
+    .gtab.active .gt-n { color: var(--navy); }
+    .gtab .gt-t { font-size: 9px; color: rgba(255,255,255,0.5); margin-top: 2px; }
+    .gtab.active .gt-t { color: rgba(21,41,77,0.75); }
+    .gtab.tbc .gt-n { color: rgba(255,255,255,0.4); }
+
+    /* ── Game card ── */
+    .gcard { margin: 12px; }
+    .match-head { background: var(--navy-mid); border: 1px solid var(--border); border-radius: 12px 12px 0 0; border-bottom: none; padding: 13px 15px; }
+    .mh-top { display:flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+    .mh-badge { font-size: 10px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--gold); font-weight: 700; }
+    .mh-field { font-size: 10px; color: rgba(255,255,255,0.5); text-transform: uppercase; letter-spacing: 0.05em; }
+    .mh-fixture { display:flex; align-items:center; gap: 9px; margin-top: 9px; }
+    .mh-us { font-family:'Bebas Neue',sans-serif; font-size: 19px; letter-spacing:0.03em; color:#fff; }
+    .mh-vs { font-size: 11px; color: rgba(255,255,255,0.4); }
+    .mh-opp { font-size: 15px; font-weight: 600; color: rgba(255,255,255,0.9); }
+    .mh-when { margin-left:auto; text-align:right; }
+    .mh-time { font-family:'Bebas Neue',sans-serif; font-size: 22px; color: var(--gold-light); line-height:1; }
+    .mh-day { font-size: 10px; color: rgba(255,255,255,0.5); margin-top: 2px; }
+    .mh-ha { display:inline-block; font-size: 9px; font-weight:700; padding: 1px 6px; border-radius: 4px; margin-top:5px; text-transform:uppercase; letter-spacing:0.05em; }
+    .ha-home { background: rgba(126,200,244,0.18); color: var(--def-text); }
+    .ha-away { background: rgba(244,160,176,0.18); color: var(--st-text); }
+
+    .gk-banner { background: rgba(224,169,46,0.10); border: 1px solid var(--border); border-top: none; padding: 9px 15px; display:flex; align-items:center; gap: 8px; flex-wrap: wrap; }
+    .gk-banner.rounded-b { border-radius: 0 0 12px 12px; }
+    .gk-ico { font-size: 13px; }
+    .gk-lbl { font-family:'Bebas Neue',sans-serif; font-size: 12px; letter-spacing:0.06em; color: var(--gold); }
+    .gk-val { font-size: 12px; color: rgba(255,255,255,0.85); }
+    .gk-val b { color:#fff; }
+    .gk-arrow { color: rgba(255,255,255,0.4); margin: 0 3px; }
+
+    .body { background: var(--navy); border: 1px solid var(--border); border-top: none; border-radius: 0 0 12px 12px; padding: 14px 14px 18px; }
+
+    /* block timeline */
+    .btl { display:flex; gap: 5px; margin-bottom: 13px; }
+    .btl-b { flex:1; background: var(--navy-mid); border:1px solid var(--border); border-radius:6px; padding:7px 4px; text-align:center; cursor:pointer; transition: all 0.15s; }
+    .btl-b.active { background: var(--gold); border-color: var(--gold); }
+    .btl-b .b-l { font-family:'Bebas Neue',sans-serif; font-size:13px; color:var(--gold); line-height:1; }
+    .btl-b.active .b-l { color: var(--navy); }
+    .btl-b .b-m { font-size:9px; color:rgba(255,255,255,0.5); margin-top:2px; }
+    .btl-b.active .b-m { color: rgba(21,41,77,0.75); }
+
+    /* pitch */
+    .pitch { background: linear-gradient(180deg,#1A4A2A 0%,#163D22 100%); border-radius:10px; padding:14px 10px; margin-bottom:10px; border:1px solid rgba(255,255,255,0.08); position:relative; overflow:hidden; }
+    .pitch::before { content:''; position:absolute; top:50%; left:8%; right:8%; height:1px; background:rgba(255,255,255,0.09); transform:translateY(-50%); }
+    .pitch::after { content:''; position:absolute; top:50%; left:50%; width:58px; height:58px; border:1px solid rgba(255,255,255,0.09); border-radius:50%; transform:translate(-50%,-50%); }
+    .p-dir { font-size:9px; text-align:center; color:rgba(255,255,255,0.3); letter-spacing:0.08em; text-transform:uppercase; margin-bottom:10px; }
+    .p-row { display:flex; justify-content:center; gap:6px; margin-bottom:9px; position:relative; z-index:1; }
+    .p-row:last-child { margin-bottom:0; }
+    .chip { display:flex; flex-direction:column; align-items:center; gap:2px; min-width:62px; }
+    .chip .c-pos { font-size:9px; color:rgba(255,255,255,0.45); letter-spacing:0.06em; text-transform:uppercase; }
+    .chip .c-name { padding:5px 10px; border-radius:20px; font-size:12px; font-weight:600; text-align:center; white-space:nowrap; }
+    .c-gk  { background: var(--gk-bg);  color: var(--gk-text); }
+    .c-def { background: var(--def-bg); color: var(--def-text); }
+    .c-mid { background: var(--mid-bg); color: var(--mid-text); }
+    .c-st  { background: var(--st-bg);  color: var(--st-text); }
+
+    /* sub / halftime cards */
+    .subcard { background: var(--sub-bg); border:1px solid rgba(224,169,46,0.3); border-radius:8px; padding:10px 12px; margin-bottom:10px; }
+    .subcard.ht { background: rgba(224,169,46,0.08); border-color: var(--border); }
+    .sc-title { font-family:'Bebas Neue',sans-serif; font-size:13px; letter-spacing:0.07em; color:var(--gold); margin-bottom:7px; }
+    .sc-row { display:flex; gap:8px; align-items:flex-start; margin-bottom:5px; }
+    .sc-row:last-child { margin-bottom:0; }
+    .sc-tag { font-family:'Bebas Neue',sans-serif; font-size:12px; min-width:34px; white-space:nowrap; }
+    .t-off { color:#F47C7C; } .t-on { color:#7CF4A8; } .t-stay { color: rgba(255,255,255,0.45); }
+    .sc-detail { font-size:11.5px; color:rgba(255,255,255,0.75); line-height:1.45; }
+    .sc-detail .off-p { color:#F47C7C; font-weight:600; }
+    .sc-detail .on-p { color:#7CF4A8; font-weight:600; }
+    .sc-stay { font-size:10.5px; color:rgba(255,255,255,0.4); }
+    .no-sub { font-size:11px; color:rgba(255,255,255,0.4); font-style:italic; text-align:center; padding: 4px 0; }
+
+    /* minutes overview */
+    .section { margin: 14px 12px; }
+    .sec-title { font-family:'Bebas Neue',sans-serif; font-size:15px; letter-spacing:0.09em; color:var(--gold); margin-bottom:9px; }
+    .mtable { width:100%; border-collapse:collapse; font-size:11px; background: var(--navy); border:1px solid var(--border); border-radius:10px; overflow:hidden; }
+    .mtable th { font-family:'Bebas Neue',sans-serif; font-size:11px; letter-spacing:0.05em; color:rgba(255,255,255,0.45); padding:7px 3px; text-align:center; border-bottom:1px solid var(--border); font-weight:400; }
+    .mtable th:first-child { text-align:left; padding-left:10px; }
+    .mtable td { padding:6px 3px; text-align:center; border-bottom:1px solid rgba(255,255,255,0.04); }
+    .mtable td:first-child { text-align:left; padding-left:10px; font-weight:600; font-size:12px; }
+    .mtable tr:last-child td { border-bottom:none; }
+    .m-num { color: rgba(255,255,255,0.8); }
+    .m-gk { display:inline-block; padding:1px 5px; border-radius:4px; background: var(--gk-bg); color: var(--gk-text); font-size:10px; font-weight:600; }
+    .m-zero { color: rgba(255,255,255,0.18); }
+    .m-total { font-family:'Bebas Neue',sans-serif; font-size:14px; color: var(--gold-light); }
+    .m-cap { font-size:10.5px; color:rgba(255,255,255,0.4); margin-top:7px; line-height:1.5; }
+
+    .rules { background: var(--navy); border:1px solid var(--border); border-radius:10px; padding:12px 14px; }
+    .rules li { font-size:11.5px; color:rgba(255,255,255,0.72); margin-left:16px; margin-bottom:4px; line-height:1.5; }
+    .rules li::marker { color: var(--gold); }
+
+    .legend { display:flex; gap:10px; flex-wrap:wrap; margin: 12px; padding-top: 4px; }
+    .lg { display:flex; align-items:center; gap:5px; font-size:10.5px; color:rgba(255,255,255,0.55); }
+    .lg .dot { width:9px; height:9px; border-radius:3px; }
+
+    footer { text-align:center; padding: 20px 16px 32px; font-size:11px; color:rgba(255,255,255,0.35); line-height:1.6; }
+    footer a { color: var(--gold); text-decoration:none; }
+  </style>
+</head>
+<body>
+
+<!-- Password gate -->
+<div id="gate">
+  <div class="gate-card">
+    <div class="gate-badge">⚽</div>
+    <div class="gate-title">Fencibles <span class="gate-gold">All Stars</span></div>
+    <div class="gate-sub">Tournament Plan · Coaches only</div>
+    <input id="gateInput" class="gate-input" type="password" placeholder="Enter password" autocomplete="current-password" />
+    <button class="gate-btn" onclick="checkGate()">Enter</button>
+    <div class="gate-error" id="gateError"></div>
+  </div>
+</div>
+
+<div class="wrap">
+  <div class="hero">
+    <div class="crest">⚽</div>
+    <h1>Auckland United Tournament</h1>
+    <div class="sub">Fencibles United FC · All Stars — U10</div>
+    <div class="meta">3–4 October 2026 · Group A · Field 4C</div>
+    <div class="hero-stats">
+      <div class="hstat"><b>6</b><span>Games</span></div>
+      <div class="hstat"><b>2×15'</b><span>Per Game</span></div>
+      <div class="hstat"><b>2-3-1</b><span>Shape</span></div>
+      <div class="hstat"><b>10</b><span>Squad</span></div>
+    </div>
+  </div>
+
+  <div class="gamebar" id="gamebar"></div>
+  <div id="gameView"></div>
+
+  <div class="legend">
+    <div class="lg"><span class="dot" style="background:var(--st-bg)"></span>Striker</div>
+    <div class="lg"><span class="dot" style="background:var(--mid-bg)"></span>Midfield</div>
+    <div class="lg"><span class="dot" style="background:var(--def-bg)"></span>Defence</div>
+    <div class="lg"><span class="dot" style="background:var(--gk-bg)"></span>Keeper</div>
+  </div>
+
+  <div class="section">
+    <div class="sec-title">Minutes — Full Tournament</div>
+    <div id="minsTable"></div>
+    <div class="m-cap">
+      Target: <b>70 min</b> each in Games 1–3, <b>60 outfield min</b> each in Games 4–6 (Asher keeps all of Games 4–6).
+      <span style="color:var(--gk-text)">GK</span> marks a game where the player keeps a half (Games 1–3) or full (Games 4–6).
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="sec-title">Ground Rules</div>
+    <div class="rules">
+      <ul>
+        <li>Equal minutes — nobody sits two blocks in a row (checked across games too).</li>
+        <li>Subs every 10 min (0–10, 10–20, 20–30). The 10–20 block spans halftime.</li>
+        <li>Games 1–3: no subs at halftime — keeper swap only. Each keeper keeps one half and isn't subbed that game.</li>
+        <li>Centre mid: only Zaid, Cooper, Jasper or Lucas.</li>
+        <li>Defence: only Lucas, Jasper, Shamik, Zaid, Cooper. Shamik — defence or GK only.</li>
+        <li>Thomas — striker or GK only. Jayce — striker, right wing or GK.</li>
+        <li>Joshua & Ariyan — never defend or keep.</li>
+        <li>Asher joins from Game 4 and keeps every game on Day 2.</li>
+      </ul>
+    </div>
+  </div>
+
+  <footer>
+    Fencibles United · All Stars — U10 · Auckland United Tournament 2026<br>
+    Games 5 &amp; 6 kickoff times to be confirmed · <a href="index.html">← Season plan</a>
+  </footer>
+</div>
+
+<script>
+  (function(){
+    if (sessionStorage.getItem('f_auth') === '1') document.getElementById('gate').classList.add('hidden');
+    document.getElementById('gateInput').addEventListener('keydown', e => { if (e.key === 'Enter') checkGate(); });
+  })();
+  function checkGate(){
+    const input = document.getElementById('gateInput');
+    if (input.value.toLowerCase().trim() === 'fencibles') {
+      sessionStorage.setItem('f_auth','1');
+      document.getElementById('gate').classList.add('hidden');
+    } else {
+      input.classList.add('error');
+      document.getElementById('gateError').textContent = 'Incorrect password — try again';
+      setTimeout(()=>input.classList.remove('error'),400);
+      input.value=''; input.focus();
+    }
+  }
+
+  // ── Fixtures ──
+  const FIX = {
+    1:{day:'Sat 3 Oct', time:'09:00', field:'4C', opp:'Auckland United FC Copa', home:true},
+    2:{day:'Sat 3 Oct', time:'10:20', field:'4C', opp:'Auckland United FC Black', home:false},
+    3:{day:'Sat 3 Oct', time:'12:40', field:'4C', opp:'Beachlands-Maraetai FC', home:true},
+    4:{day:'Sun 4 Oct', time:'10:00', field:'4C', opp:'Hibiscus Coast FC', home:false},
+    5:{day:'Sun 4 Oct', time:'TBC', field:'4C', opp:'To be confirmed', home:null},
+    6:{day:'Sun 4 Oct', time:'TBC', field:'4C', opp:'To be confirmed', home:null},
+  };
+
+  // ── Rotation plan (validated) ──
+  const GAMES = {
+    1:{ gk:{h1:'Cooper',h2:'Thomas'}, blocks:[
+      {s:0,e:10, lu:{gk:'Cooper',def:['Lucas','Zaid'],mid:{l:'Joshua',c:'Jasper',r:'Ariyan'},st:'Thomas'}},
+      {s:10,e:20,lu:{gk:'Cooper',def:['Shamik','Zaid'],mid:{l:'Joshua',c:'Jasper',r:'Jayce'},st:'Thomas'},
+        ht:{lu:{gk:'Thomas',def:['Shamik','Zaid'],mid:{l:'Joshua',c:'Jasper',r:'Cooper'},st:'Jayce'},
+            note:'Thomas goes in goal, Jayce moves to striker, Cooper out to right wing.'}},
+      {s:20,e:30,lu:{gk:'Thomas',def:['Shamik','Cooper'],mid:{l:'Ariyan',c:'Lucas',r:'Joshua'},st:'Jayce'}},
+    ]},
+    2:{ gk:{h1:'Lucas',h2:'Jayce'}, blocks:[
+      {s:0,e:10, lu:{gk:'Lucas',def:['Shamik','Cooper'],mid:{l:'Joshua',c:'Zaid',r:'Jasper'},st:'Jayce'}},
+      {s:10,e:20,lu:{gk:'Lucas',def:['Shamik','Zaid'],mid:{l:'Ariyan',c:'Jasper',r:'Jayce'},st:'Thomas'},
+        ht:{lu:{gk:'Jayce',def:['Shamik','Zaid'],mid:{l:'Ariyan',c:'Jasper',r:'Lucas'},st:'Thomas'},
+            note:'Jayce goes in goal, Lucas out to right wing.'}},
+      {s:20,e:30,lu:{gk:'Jayce',def:['Zaid','Cooper'],mid:{l:'Ariyan',c:'Lucas',r:'Joshua'},st:'Thomas'}},
+    ]},
+    3:{ gk:{h1:'Jasper',h2:'Shamik'}, blocks:[
+      {s:0,e:10, lu:{gk:'Jasper',def:['Shamik','Zaid'],mid:{l:'Joshua',c:'Lucas',r:'Ariyan'},st:'Jayce'}},
+      {s:10,e:20,lu:{gk:'Jasper',def:['Shamik','Cooper'],mid:{l:'Ariyan',c:'Zaid',r:'Jayce'},st:'Thomas'},
+        ht:{lu:{gk:'Shamik',def:['Zaid','Cooper'],mid:{l:'Ariyan',c:'Jasper',r:'Jayce'},st:'Thomas'},
+            note:'Shamik goes in goal, Zaid drops into defence, Jasper out to centre mid.'}},
+      {s:20,e:30,lu:{gk:'Shamik',def:['Lucas','Cooper'],mid:{l:'Joshua',c:'Jasper',r:'Ariyan'},st:'Thomas'}},
+    ]},
+    4:{ gk:{h1:'Asher',h2:'Asher'}, blocks:[
+      {s:0,e:10, lu:{gk:'Asher',def:['Shamik','Jasper'],mid:{l:'Ariyan',c:'Cooper',r:'Zaid'},st:'Jayce'}},
+      {s:10,e:20,lu:{gk:'Asher',def:['Shamik','Lucas'],mid:{l:'Joshua',c:'Jasper',r:'Ariyan'},st:'Thomas'}},
+      {s:20,e:30,lu:{gk:'Asher',def:['Lucas','Zaid'],mid:{l:'Joshua',c:'Cooper',r:'Jayce'},st:'Thomas'}},
+    ]},
+    5:{ gk:{h1:'Asher',h2:'Asher'}, blocks:[
+      {s:0,e:10, lu:{gk:'Asher',def:['Shamik','Lucas'],mid:{l:'Ariyan',c:'Jasper',r:'Joshua'},st:'Thomas'}},
+      {s:10,e:20,lu:{gk:'Asher',def:['Zaid','Cooper'],mid:{l:'Joshua',c:'Lucas',r:'Jayce'},st:'Thomas'}},
+      {s:20,e:30,lu:{gk:'Asher',def:['Shamik','Cooper'],mid:{l:'Ariyan',c:'Zaid',r:'Jasper'},st:'Jayce'}},
+    ]},
+    6:{ gk:{h1:'Asher',h2:'Asher'}, blocks:[
+      {s:0,e:10, lu:{gk:'Asher',def:['Lucas','Cooper'],mid:{l:'Joshua',c:'Zaid',r:'Jayce'},st:'Thomas'}},
+      {s:10,e:20,lu:{gk:'Asher',def:['Shamik','Jasper'],mid:{l:'Zaid',c:'Cooper',r:'Ariyan'},st:'Jayce'}},
+      {s:20,e:30,lu:{gk:'Asher',def:['Shamik','Lucas'],mid:{l:'Joshua',c:'Jasper',r:'Ariyan'},st:'Thomas'}},
+    ]},
+  };
+  const SQUAD = ['Lucas','Jasper','Shamik','Zaid','Cooper','Thomas','Jayce','Joshua','Ariyan','Asher'];
+
+  // ── Helpers ──
+  function posMap(lu){
+    return {[lu.gk]:'GK', [lu.def[0]]:'LB', [lu.def[1]]:'RB', [lu.mid.l]:'LM', [lu.mid.c]:'CM', [lu.mid.r]:'RM', [lu.st]:'ST'};
+  }
+  function grp(pos){ return pos==='GK'?'gk': (pos==='LB'||pos==='RB')?'def': pos==='ST'?'st':'mid'; }
+  function chip(pos,name){ return `<div class="chip"><div class="c-pos">${pos}</div><div class="c-name c-${grp(pos)}">${name}</div></div>`; }
+  function pitch(lu){
+    return `<div class="pitch"><div class="p-dir">↑ Attack</div>`+
+      `<div class="p-row">${chip('ST',lu.st)}</div>`+
+      `<div class="p-row">${chip('LM',lu.mid.l)}${chip('CM',lu.mid.c)}${chip('RM',lu.mid.r)}</div>`+
+      `<div class="p-row">${chip('LB',lu.def[0])}${chip('RB',lu.def[1])}</div>`+
+      `<div class="p-row">${chip('GK',lu.gk)}</div></div>`;
+  }
+  function computeSub(endLu,startLu){
+    const e=posMap(endLu), s=posMap(startLu);
+    const eK=Object.keys(e), sK=Object.keys(s);
+    return {
+      off: eK.filter(p=>!sK.includes(p)),
+      on: sK.filter(p=>!eK.includes(p)).map(p=>({p,pos:s[p]})),
+      stay: sK.filter(p=>eK.includes(p) && e[p]!==s[p]).map(p=>({p,from:e[p],to:s[p]}))
+    };
+  }
+  function subCard(time,end,start){
+    const d=computeSub(end,start);
+    const off = d.off.map(p=>`<span class="off-p">${p}</span>`).join(' · ') || '—';
+    const on  = d.on.map(o=>`<span class="on-p">${o.p}</span> (${o.pos})`).join(' · ') || '—';
+    const stay= d.stay.map(s=>`${s.p} ${s.from}→${s.to}`).join(' · ');
+    return `<div class="subcard"><div class="sc-title">⏱ ${time}' — SUB WINDOW</div>`+
+      `<div class="sc-row"><div class="sc-tag t-off">OFF</div><div class="sc-detail">${off}</div></div>`+
+      `<div class="sc-row"><div class="sc-tag t-on">ON</div><div class="sc-detail">${on}</div></div>`+
+      (stay?`<div class="sc-row"><div class="sc-tag t-stay">MOVE</div><div class="sc-stay">${stay}</div></div>`:'')+
+      `</div>`;
+  }
+  function htCard(block){
+    const d=computeSub(block.lu, block.ht.lu);
+    const moves = d.stay.map(s=>`${s.p} ${s.from}→${s.to}`).join(' · ');
+    return `<div class="subcard ht"><div class="sc-title">⏱ 15' — HALFTIME · keeper swap (no subs)</div>`+
+      `<div class="sc-detail" style="margin-bottom:5px">${block.ht.note}</div>`+
+      (moves?`<div class="sc-stay">${moves}</div>`:'')+`</div>`;
+  }
+
+  // ── Game render ──
+  let CUR = 1;
+  function renderBar(){
+    const rows = [[1,'Sat 3 Oct',[1,2,3]],[2,'Sun 4 Oct',[4,5,6]]];
+    let h='';
+    for (const [,label,ids] of rows){
+      h+=`<div class="daygroup"><div class="daylabel">${label}</div><div class="gtabs">`;
+      for (const id of ids){
+        const tbc = FIX[id].time==='TBC';
+        h+=`<div class="gtab ${id===CUR?'active':''} ${tbc?'tbc':''}" onclick="selGame(${id})">`+
+           `<div class="gt-n">G${id}</div><div class="gt-t">${FIX[id].time}</div></div>`;
+      }
+      h+=`</div></div>`;
+    }
+    document.getElementById('gamebar').innerHTML=h;
+  }
+  window.selGame=id=>{ CUR=id; BLK=0; renderBar(); renderGame(); window.scrollTo({top:document.getElementById('gamebar').offsetTop-4,behavior:'smooth'}); };
+
+  let BLK = 0;
+  window.selBlock=i=>{ BLK=i; renderGame(); };
+
+  function renderGame(){
+    const g=GAMES[CUR], f=FIX[CUR];
+    const ha = f.home===null ? '' : (f.home?'<span class="mh-ha ha-home">Home</span>':'<span class="mh-ha ha-away">Away</span>');
+    // keeper banner
+    const sameGk = g.gk.h1===g.gk.h2;
+    const gkVal = sameGk ? `<b>${g.gk.h1}</b> — full game`
+      : `<b>${g.gk.h1}</b> <span class="gk-arrow">→</span> <b>${g.gk.h2}</b> <span style="color:rgba(255,255,255,0.45)">(swap at HT)</span>`;
+
+    const b=g.blocks[BLK];
+    let detail = pitch(b.lu);
+    if (b.ht){ detail += htCard(b); }
+    // sub window at end of this block → next block
+    if (BLK < g.blocks.length-1){
+      const endLu = b.ht ? b.ht.lu : b.lu;
+      detail += subCard(b.e, endLu, g.blocks[BLK+1].lu);
+    } else {
+      detail += `<div class="no-sub">— Full time —</div>`;
+    }
+
+    const tl = g.blocks.map((bl,i)=>`<div class="btl-b ${i===BLK?'active':''}" onclick="selBlock(${i})">`+
+      `<div class="b-l">${bl.s}–${bl.e}'</div><div class="b-m">${i===0?'1st half':i===1?'HT block':'2nd half'}</div></div>`).join('');
+
+    document.getElementById('gameView').innerHTML =
+      `<div class="gcard">
+        <div class="match-head">
+          <div class="mh-top"><div class="mh-badge">Game ${CUR} · Group A · U10</div><div class="mh-field">Field ${f.field}</div></div>
+          <div class="mh-fixture">
+            <div><div class="mh-us">Fencibles All Stars</div>${ha}</div>
+            <div class="mh-vs">vs</div>
+            <div class="mh-opp">${f.opp}</div>
+            <div class="mh-when"><div class="mh-time">${f.time}</div><div class="mh-day">${f.day}</div></div>
+          </div>
+        </div>
+        <div class="gk-banner"><span class="gk-ico">🧤</span><span class="gk-lbl">GK</span><span class="gk-val">${gkVal}</span></div>
+        <div class="body">
+          <div class="btl">${tl}</div>
+          ${detail}
+        </div>
+      </div>`;
+  }
+
+  // ── Minutes table ──
+  function renderMins(){
+    // compute minutes + keeper flags
+    const mins={}, keeps={};
+    SQUAD.forEach(p=>{mins[p]=[0,0,0,0,0,0]; keeps[p]=[false,false,false,false,false,false];});
+    for (let gi=1; gi<=6; gi++){
+      const g=GAMES[gi];
+      g.blocks.forEach(b=>{
+        const on=[b.lu.gk,...b.lu.def,b.lu.mid.l,b.lu.mid.c,b.lu.mid.r,b.lu.st];
+        on.forEach(p=>mins[p][gi-1]+=10);
+      });
+      [g.gk.h1,g.gk.h2].forEach(k=>keeps[k][gi-1]=true);
+    }
+    let head='<tr><th>Player</th>';
+    for(let i=1;i<=6;i++) head+=`<th>G${i}</th>`;
+    head+='<th>Tot</th></tr>';
+    let rows='';
+    SQUAD.forEach(p=>{
+      let r=`<tr><td>${p}</td>`;
+      for(let i=0;i<6;i++){
+        const m=mins[p][i];
+        if(m===0) r+=`<td class="m-zero">–</td>`;
+        else if(keeps[p][i]) r+=`<td><span class="m-gk">${m}</span></td>`;
+        else r+=`<td class="m-num">${m}</td>`;
+      }
+      r+=`<td class="m-total">${mins[p].reduce((a,b)=>a+b,0)}</td></tr>`;
+      rows+=r;
+    });
+    document.getElementById('minsTable').innerHTML=`<table class="mtable"><thead>${head}</thead><tbody>${rows}</tbody></table>`;
+  }
+
+  renderBar(); renderGame(); renderMins();
+</script>
+</body>
+</html>
