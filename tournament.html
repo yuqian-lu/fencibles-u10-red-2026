@@ -255,16 +255,16 @@
   // ── Rotation plan (validated) ──
   const GAMES = {
     1:{ gk:{h1:'Cooper',h2:'Thomas'}, note:'Jayce rested this game — his minutes go to Jasper & Lucas (both play the full 30).', blocks:[
-      {s:0,e:10, lu:{gk:'Cooper',def:['Lucas','Zaid'],mid:{l:'Joshua',c:'Jasper',r:'Ariyan'},st:'Thomas'}},
-      {s:10,e:20,lu:{gk:'Cooper',def:['Shamik','Zaid'],mid:{l:'Joshua',c:'Jasper',r:'Lucas'},st:'Thomas'},
-        ht:{lu:{gk:'Thomas',def:['Shamik','Zaid'],mid:{l:'Joshua',c:'Jasper',r:'Cooper'},st:'Lucas'},
-            note:'Thomas goes in goal, Lucas moves up to striker, Cooper comes out to right midfield.'}},
-      {s:20,e:30,lu:{gk:'Thomas',def:['Shamik','Cooper'],mid:{l:'Joshua',c:'Jasper',r:'Ariyan'},st:'Lucas'}},
+      {s:0,e:10, lu:{gk:'Cooper',def:['Jasper','Lucas'],mid:{l:'Joshua',c:'Zaid',r:'Ariyan'},st:'Thomas'}},
+      {s:10,e:20,lu:{gk:'Cooper',def:['Shamik','Lucas'],mid:{l:'Jasper',c:'Zaid',r:'Joshua'},st:'Thomas'},
+        ht:{lu:{gk:'Thomas',def:['Shamik','Cooper'],mid:{l:'Jasper',c:'Zaid',r:'Joshua'},st:'Lucas'},
+            note:'Thomas goes in goal, Lucas moves up to striker, Cooper comes out to right back.'}},
+      {s:20,e:30,lu:{gk:'Thomas',def:['Shamik','Cooper'],mid:{l:'Ariyan',c:'Jasper',r:'Joshua'},st:'Lucas'}},
     ]},
     2:{ gk:{h1:'Lucas',h2:'Jayce'}, blocks:[
       {s:0,e:10, lu:{gk:'Lucas',def:['Shamik','Cooper'],mid:{l:'Joshua',c:'Zaid',r:'Jasper'},st:'Jayce'}},
-      {s:10,e:20,lu:{gk:'Lucas',def:['Shamik','Zaid'],mid:{l:'Ariyan',c:'Jasper',r:'Jayce'},st:'Thomas'},
-        ht:{lu:{gk:'Jayce',def:['Shamik','Zaid'],mid:{l:'Ariyan',c:'Jasper',r:'Lucas'},st:'Thomas'},
+      {s:10,e:20,lu:{gk:'Lucas',def:['Shamik','Jasper'],mid:{l:'Ariyan',c:'Zaid',r:'Jayce'},st:'Thomas'},
+        ht:{lu:{gk:'Jayce',def:['Shamik','Jasper'],mid:{l:'Ariyan',c:'Zaid',r:'Lucas'},st:'Thomas'},
             note:'Jayce goes in goal, Lucas out to right wing.'}},
       {s:20,e:30,lu:{gk:'Jayce',def:['Zaid','Cooper'],mid:{l:'Ariyan',c:'Lucas',r:'Joshua'},st:'Thomas'}},
     ]},
@@ -277,7 +277,7 @@
     ]},
     4:{ gk:{h1:'Asher',h2:'Asher'}, blocks:[
       {s:0,e:10, lu:{gk:'Asher',def:['Shamik','Jasper'],mid:{l:'Ariyan',c:'Cooper',r:'Zaid'},st:'Jayce'}},
-      {s:10,e:20,lu:{gk:'Asher',def:['Shamik','Lucas'],mid:{l:'Joshua',c:'Jasper',r:'Ariyan'},st:'Thomas'}},
+      {s:10,e:20,lu:{gk:'Asher',def:['Jasper','Shamik'],mid:{l:'Joshua',c:'Lucas',r:'Ariyan'},st:'Thomas'}},
       {s:20,e:30,lu:{gk:'Asher',def:['Lucas','Zaid'],mid:{l:'Joshua',c:'Cooper',r:'Jayce'},st:'Thomas'}},
     ]},
     5:{ gk:{h1:'Asher',h2:'Asher'}, blocks:[
@@ -287,8 +287,8 @@
     ]},
     6:{ gk:{h1:'Asher',h2:'Asher'}, blocks:[
       {s:0,e:10, lu:{gk:'Asher',def:['Lucas','Cooper'],mid:{l:'Joshua',c:'Zaid',r:'Jayce'},st:'Thomas'}},
-      {s:10,e:20,lu:{gk:'Asher',def:['Shamik','Jasper'],mid:{l:'Zaid',c:'Cooper',r:'Ariyan'},st:'Jayce'}},
-      {s:20,e:30,lu:{gk:'Asher',def:['Shamik','Lucas'],mid:{l:'Joshua',c:'Jasper',r:'Ariyan'},st:'Thomas'}},
+      {s:10,e:20,lu:{gk:'Asher',def:['Shamik','Zaid'],mid:{l:'Jasper',c:'Cooper',r:'Ariyan'},st:'Jayce'}},
+      {s:20,e:30,lu:{gk:'Asher',def:['Jasper','Shamik'],mid:{l:'Joshua',c:'Lucas',r:'Ariyan'},st:'Thomas'}},
     ]},
   };
   const SQUAD = ['Lucas','Jasper','Shamik','Zaid','Cooper','Thomas','Jayce','Joshua','Ariyan','Asher'];
