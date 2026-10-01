@@ -125,6 +125,7 @@
     .sc-detail .on-p { color:#7CF4A8; font-weight:600; }
     .sc-stay { font-size:10.5px; color:rgba(255,255,255,0.4); }
     .no-sub { font-size:11px; color:rgba(255,255,255,0.4); font-style:italic; text-align:center; padding: 4px 0; }
+    .gnote { background: rgba(126,200,244,0.09); border:1px solid rgba(126,200,244,0.22); border-radius:7px; padding:8px 11px; font-size:11.5px; color: var(--def-text); margin-bottom:12px; line-height:1.45; }
 
     /* minutes overview */
     .section { margin: 14px 12px; }
@@ -197,6 +198,7 @@
     <div class="m-cap">
       Target: <b>70 min</b> each in Games 1–3, <b>60 outfield min</b> each in Games 4–6 (Asher keeps all of Games 4–6).
       <span style="color:var(--gk-text)">GK</span> marks a game where the player keeps a half (Games 1–3) or full (Games 4–6).
+      <br><b>Game 1 adjusted:</b> Jayce rested → Jasper &amp; Lucas take his minutes (both 30). Day-1 totals: Jasper &amp; Lucas 80, Jayce 50, rest 70.
     </div>
   </div>
 
@@ -252,12 +254,12 @@
 
   // ── Rotation plan (validated) ──
   const GAMES = {
-    1:{ gk:{h1:'Cooper',h2:'Thomas'}, blocks:[
+    1:{ gk:{h1:'Cooper',h2:'Thomas'}, note:'Jayce rested this game — his minutes go to Jasper & Lucas (both play the full 30).', blocks:[
       {s:0,e:10, lu:{gk:'Cooper',def:['Lucas','Zaid'],mid:{l:'Joshua',c:'Jasper',r:'Ariyan'},st:'Thomas'}},
-      {s:10,e:20,lu:{gk:'Cooper',def:['Shamik','Zaid'],mid:{l:'Joshua',c:'Jasper',r:'Jayce'},st:'Thomas'},
-        ht:{lu:{gk:'Thomas',def:['Shamik','Zaid'],mid:{l:'Joshua',c:'Jasper',r:'Cooper'},st:'Jayce'},
-            note:'Thomas goes in goal, Jayce moves to striker, Cooper out to right wing.'}},
-      {s:20,e:30,lu:{gk:'Thomas',def:['Shamik','Cooper'],mid:{l:'Ariyan',c:'Lucas',r:'Joshua'},st:'Jayce'}},
+      {s:10,e:20,lu:{gk:'Cooper',def:['Shamik','Zaid'],mid:{l:'Joshua',c:'Jasper',r:'Lucas'},st:'Thomas'},
+        ht:{lu:{gk:'Thomas',def:['Shamik','Zaid'],mid:{l:'Joshua',c:'Jasper',r:'Cooper'},st:'Lucas'},
+            note:'Thomas goes in goal, Lucas moves up to striker, Cooper comes out to right midfield.'}},
+      {s:20,e:30,lu:{gk:'Thomas',def:['Shamik','Cooper'],mid:{l:'Joshua',c:'Jasper',r:'Ariyan'},st:'Lucas'}},
     ]},
     2:{ gk:{h1:'Lucas',h2:'Jayce'}, blocks:[
       {s:0,e:10, lu:{gk:'Lucas',def:['Shamik','Cooper'],mid:{l:'Joshua',c:'Zaid',r:'Jasper'},st:'Jayce'}},
@@ -388,6 +390,7 @@
         </div>
         <div class="gk-banner"><span class="gk-ico">🧤</span><span class="gk-lbl">GK</span><span class="gk-val">${gkVal}</span></div>
         <div class="body">
+          ${g.note?`<div class="gnote">ⓘ ${g.note}</div>`:''}
           <div class="btl">${tl}</div>
           ${detail}
         </div>
